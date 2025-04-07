@@ -1,0 +1,162 @@
+openapi: '3.0.3'
+info:
+  title: Cinema Payment Service API
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /payments:
+    get:
+      tags:
+        - Payments
+      summary: Get all payments
+      responses:
+        '200':
+          description: List of all payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+    post:
+      tags:
+        - Payments
+      summary: Create a new payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        '201':
+          description: Payment created
+  /payments/{id}:
+    get:
+      tags:
+        - Payments
+      summary: Get a payment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Payment not found
+    put:
+      tags:
+        - Payments
+      summary: Update a payment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        '200':
+          description: Payment updated
+        '404':
+          description: Payment not found
+    delete:
+      tags:
+        - Payments
+      summary: Delete a payment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Payment deleted
+        '404':
+          description: Payment not found
+  /payments/process:
+    post:
+      tags:
+        - Payments
+      summary: Process a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment processed successfully
+        '400':
+          description: Invalid payment request
+components:
+  schemas:
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the payment
+        ticketId:
+          type: string
+          description: ID of the ticket associated with the payment
+        amount:
+          type: number
+          format: float
+          description: Amount paid
+        status:
+          type: string
+          description: Status of the payment
+          enum:
+            - pending
+            - completed
+            - failed
+        paymentMethod:
+          type: string
+          description: Payment method used
+          enum:
+            - credit_card
+            - debit_card
+            - paypal
+            - cash
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date
+    PaymentRequest:
+      type: object
+      properties:
+        ticketId:
+          type: string
+          description: ID of the ticket to be paid
+        amount:
+          type: number
+          format: float
+          description: Amount to be paid
+        paymentMethod:
+          type: string
+          description: Payment method to be used
+          enum:
+            - credit_card
+            - debit_card
+            - paypal
+            - cash

@@ -1,0 +1,19 @@
+@startuml SequenceDiagram
+actor Client
+participant "Frontend" as FE
+participant "Service A" as A
+participant "Service B" as B
+participant "Message Queue" as MQ
+participant "Service C" as C
+participant "Database" as DB
+
+Client -> FE: HTTP Request
+FE -> A: Forward Request
+A -> B: REST API Call
+B --> A: REST API Response
+A ->> MQ: Publish Event
+MQ ->> C: Notify Service C
+C -> DB: Write Data
+DB --> C: Acknowledge Write
+C --> MQ: Acknowledge Event
+@enduml

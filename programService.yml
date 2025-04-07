@@ -1,0 +1,343 @@
+openapi: '3.0.3'
+info:
+  title: Cinema Program API
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: Cinema Program
+    description: Cinema program management
+  - name: Shows
+    description: Shows management 
+  - name: Show Times  
+    description: Showtimes management
+paths:
+  /v1/programs:
+    post:
+      tags:
+        - Cinema Program
+      summary: Create a new program
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramRequest'
+      responses:
+        '201':
+          description: Program successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /v1/programs/{programId}:
+    get:
+      tags:
+        - Cinema Program
+      summary: Get a program by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Program details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramResponse'
+        '404':
+          description: Program not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Cinema Program
+      summary: Update a program by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramRequest'
+      responses:
+        '200':
+          description: Program updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramResponse'
+        '400':
+          description: Invalid input
+        '404':
+          description: Program not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Cinema Program
+      summary: Delete a program by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Program deleted
+        '404':
+          description: Program not found
+        '500':
+          description: Internal server error
+
+  /v1/programs/{programId}/shows:
+    post:
+      tags:
+        - Shows
+      summary: Add a show to an existing program.
+      description: Endpoint to add a show to a specific program.
+      parameters:
+        - name: programId
+          in: path
+          required: true
+          description: ID of the program to which the show will be added.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowRequest'
+      responses:
+        '201':
+          description: Show successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowResponse'
+        '400':
+          description: Validation error.
+        '404':
+          description: Program not found.
+        '500':
+          description: Internal server error.
+
+  /v1/programs/{programDate}/shows:
+    get:
+      tags:
+        - Shows
+      summary: Get shows of a program on a specific date.
+      description: Retrieve the list of shows for a specific program on the given date.
+      parameters:
+        - name: programDate
+          in: path
+          required: true
+          description: Date of the program (format YYYY-MM-DD).
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of shows retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShowResponse'
+        '400':
+          description: Invalid date format or missing required parameters.
+        '404':
+          description: Program not found.
+        '500':
+          description: Internal server error.
+
+  /v1/shows/{showId}/showTimes:
+    post:
+      tags:
+        - Show Times
+      summary: Add showtimes to an existing show.
+      description: Endpoint to add showtimes to a specific show.
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID of the show to which the showtimes will be added.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowTimesRequest'
+      responses:
+        '201':
+          description: Showtimes successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowTimesResponse'
+        '400':
+          description: Validation error.
+        '404':
+          description: Show not found.
+        '500':
+          description: Internal server error.
+    get:
+      tags:
+        - Show Times
+      summary: Get showtimes for a specific show.
+      description: Retrieve the list of showtimes for a specific show by its ID.
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID of the show to retrieve showtimes for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of showtimes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: time
+                  description: Show time in HH:mm:ss format (according to RFC 3339).
+        '404':
+          description: Show not found.
+        '500':
+          description: Internal server error.
+
+components:
+  schemas:
+    ProgramRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Program title.
+        description:
+          type: string
+          description: Program description.
+        date:
+          type: string
+          format: date
+          description: Program date (format YYYY-MM-DD).
+      required:
+        - title
+        - date
+
+    ProgramResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of the program
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+
+    ShowRequest:
+      type: object
+      properties:
+        showType:
+          type: string
+          description: Type of the show
+        showTitle:
+          type: string
+          description: Title of the show
+        description:
+          type: string
+          description: Description of the show.
+        room:
+          type: string
+          description: Room where the show will be shown
+        price:
+          type: number
+          format: float
+          description: Price of the item, including decimals.
+      required:
+        - showType
+        - showTitle
+        - description
+        - room
+        - price
+
+    ShowResponse:
+      type: object
+      properties:
+        showId:
+          type: string
+          format: uuid
+          description: Unique ID of the show
+        showType:
+          type: string
+          description: Type of the show
+        showTitle:
+          type: string
+          description: Title of the show
+        description:
+          type: string
+          description: Description of the show.
+        room:
+          type: string
+          description: Room where the show will be shown
+      required:
+        - showId
+        - showType
+        - showTitle
+        - room
+    
+    ShowTimesRequest:
+      type: object
+      properties:
+        times:
+          type: array
+          items:
+            type: string
+            format: time
+            description: Show time in HH:mm:ss format (according to RFC 3339).
+      required:
+        - times
+
+    ShowTimesResponse:
+      type: object
+      properties:
+        showId:
+          type: string
+          format: uuid
+          description: ID of the show to which the showtimes belong.
+        times:
+          type: array
+          items:
+            type: string
+            format: time
+            description: Time in HH:mm:ss format (according to RFC 3339).
+          description: List of available showTimes for the specified show.
+      required:
+        - movieId
+        - date
+        - showTimes

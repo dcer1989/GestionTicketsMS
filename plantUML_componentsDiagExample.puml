@@ -1,0 +1,50 @@
+@startuml CinemaMicroservicesArchitecture
+
+package "Client" {
+    [Frontend]
+}
+
+package "Microservices" {
+    [Program Service] as ProgramService
+    [Seat Service] as SeatService
+    [Ticket Service] as TicketService
+    [Payment Service] as PaymentService
+    [Notification Service] as NotificationService
+}
+
+package "Databases" {
+    [Program DB] as ProgramDB
+    [Seat DB] as SeatDB
+    [Ticket DB] as TicketDB
+    [Payment DB] as PaymentDB
+    [Notification DB] as NotificationDB
+}
+
+package "Infrastructure" {
+    [Message Queue] as MessageQueue
+}
+
+' Relaciones entre los microservicios y sus bases de datos
+ProgramService --> ProgramDB : Store Showtimes
+SeatService --> SeatDB : Manage Seats
+TicketService --> TicketDB : Manage Tickets
+PaymentService --> PaymentDB : Store Payment Records
+NotificationService --> NotificationDB : Log Notifications
+
+' Relaciones entre los microservicios
+Frontend --> ProgramService : View Showtimes
+Frontend --> SeatService : Check Seat Availability
+Frontend --> TicketService : Purchase Tickets
+Frontend --> PaymentService : Process Payments
+Frontend --> NotificationService : Receive Notifications
+
+TicketService --> PaymentService : Request Payment
+PaymentService --> NotificationService : Send Payment Confirmation
+TicketService --> NotificationService : Send Ticket Confirmation
+
+' Comunicación asíncrona
+ProgramService --> MessageQueue : Publish Show Updates
+SeatService --> MessageQueue : Publish Seat Updates
+MessageQueue --> NotificationService : Notify Users
+
+@enduml

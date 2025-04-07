@@ -1,0 +1,125 @@
+openapi: '3.0.3'
+info:
+  title: Cinema Ticket Management API
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /tickets:
+    get:
+      tags:
+        - Cinema Tickets
+      summary: Get all tickets
+      responses:
+        '200':
+          description: List of all tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+    post:
+      tags:
+        - Cinema Tickets
+      summary: Create a new ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '201':
+          description: Ticket created
+  /tickets/{id}:
+    get:
+      tags:
+        - Cinema Tickets
+      summary: Get a ticket by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Ticket not found
+    put:
+      tags:
+        - Cinema Tickets
+      summary: Update a ticket by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '200':
+          description: Ticket updated
+        '404':
+          description: Ticket not found
+    delete:
+      tags:
+        - Cinema Tickets
+      summary: Delete a ticket by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ticket deleted
+        '404':
+          description: Ticket not found
+components:
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the ticket
+        programId:
+          type: string
+          description: ID of the program the ticket is associated with
+        seatId:
+          type: string
+          description: ID of the seat reserved for the ticket
+        customerName:
+          type: string
+          description: Name of the customer
+        price:
+          type: number
+          format: float
+          description: Price of the ticket
+        status:
+          type: string
+          description: Status of the ticket
+          enum:
+            - purchased
+            - canceled
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date

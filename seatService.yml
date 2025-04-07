@@ -1,0 +1,239 @@
+openapi: '3.0.3'
+info:
+  title: Cinema Seat Management API
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: Cinema Seats
+    description: Seat management for cinema rooms
+  - name: Seat Reservations
+    description: Management of seat reservations
+paths:
+  /v1/seats:
+    get:
+      tags:
+        - Cinema Seats
+      summary: Get all seats
+      description: Retrieve a list of all seats in the cinema.
+      responses:
+        '200':
+          description: List of all seats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Seat'
+    post:
+      tags:
+        - Cinema Seats
+      summary: Create a new seat
+      description: Add a new seat to the cinema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeatRequest'
+      responses:
+        '201':
+          description: Seat created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /v1/seats/{id}:
+    get:
+      tags:
+        - Cinema Seats
+      summary: Get a seat by ID
+      description: Retrieve details of a specific seat by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the seat to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Seat details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatResponse'
+        '404':
+          description: Seat not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Cinema Seats
+      summary: Delete a seat by ID
+      description: Remove a specific seat from the system.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the seat to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Seat deleted successfully
+        '404':
+          description: Seat not found
+        '500':
+          description: Internal server error
+
+  /v1/seats/{id}/reservation:
+    post:
+      tags:
+        - Seat Reservations
+      summary: Reserve a seat by ID
+      description: Reserve a specific seat in the cinema by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the seat to reserve.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveSeatRequest'
+      responses:
+        '200':
+          description: Seat reserved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatResponse'
+        '400':
+          description: Invalid input or seat already reserved
+        '404':
+          description: Seat not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Seat Reservations
+      summary: Cancel a seat reservation by ID
+      description: Cancel the reservation of a specific seat in the cinema by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the seat to cancel the reservation for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation canceled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatResponse'
+        '404':
+          description: Seat not found or not reserved
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Seat:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the seat
+        room:
+          type: string
+          description: Room where the seat is located
+        row:
+          type: string
+          description: Row of the seat
+        number:
+          type: integer
+          description: Seat number
+        status:
+          type: string
+          description: Status of the seat
+          enum:
+            - available
+            - reserved
+            - occupied
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date
+
+    SeatRequest:
+      type: object
+      properties:
+        room:
+          type: string
+          description: Room where the seat is located
+        row:
+          type: string
+          description: Row of the seat
+        number:
+          type: integer
+          description: Seat number
+        status:
+          type: string
+          description: Status of the seat
+          enum:
+            - available
+            - reserved
+            - occupied
+      required:
+        - room
+        - row
+        - number
+        - status
+
+    SeatResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the seat
+        room:
+          type: string
+          description: Room where the seat is located
+        row:
+          type: string
+          description: Row of the seat
+        number:
+          type: integer
+          description: Seat number
+        status:
+          type: string
+          description: Status of the seat
+          enum:
+            - available
+            - reserved
+            - occupied
+
+    ReserveSeatRequest:
+      type: object
+      properties:
+        customerName:
+          type: string
+          description: Name of the customer reserving the seat
+      required:
+        - customerName
