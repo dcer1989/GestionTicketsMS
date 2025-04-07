@@ -7,18 +7,32 @@ servers:
 tags:
   - name: Cinema Seats
     description: Seat management for cinema rooms
-  - name: Seat Reservations
-    description: Management of seat reservations
 paths:
   /v1/seats:
     get:
       tags:
         - Cinema Seats
       summary: Get all seats
-      description: Retrieve a list of all seats in the cinema.
+      description: Retrieve a list of all seats in the cinema, with optional filters.
+      parameters:
+        - name: room
+          in: query
+          description: Filter by room.
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter by seat status (e.g., available, reserved, occupied).
+          schema:
+            type: string
+        - name: row
+          in: query
+          description: Filter by row.
+          schema:
+            type: string
       responses:
         '200':
-          description: List of all seats
+          description: List of filtered seats
           content:
             application/json:
               schema:
@@ -72,37 +86,16 @@ paths:
           description: Seat not found
         '500':
           description: Internal server error
-    delete:
+    put:
       tags:
         - Cinema Seats
-      summary: Delete a seat by ID
-      description: Remove a specific seat from the system.
+      summary: Update a seat by ID
+      description: Update the details of a specific seat in the cinema, including its status.
       parameters:
         - name: id
           in: path
           required: true
-          description: ID of the seat to delete.
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Seat deleted successfully
-        '404':
-          description: Seat not found
-        '500':
-          description: Internal server error
-
-  /v1/seats/{id}/reservation:
-    post:
-      tags:
-        - Seat Reservations
-      summary: Reserve a seat by ID
-      description: Reserve a specific seat in the cinema by its ID.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the seat to reserve.
+          description: ID of the seat to update.
           schema:
             type: string
       requestBody:
@@ -110,41 +103,74 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReserveSeatRequest'
+              $ref: '#/components/schemas/SeatRequest'
       responses:
         '200':
-          description: Seat reserved successfully
+          description: Seat updated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SeatResponse'
         '400':
-          description: Invalid input or seat already reserved
+          description: Invalid input
         '404':
           description: Seat not found
         '500':
           description: Internal server error
     delete:
       tags:
-        - Seat Reservations
-      summary: Cancel a seat reservation by ID
-      description: Cancel the reservation of a specific seat in the cinema by its ID.
+        - Cinema Seats
+      summary: Deactivate a seat by ID
+      description: Mark a specific seat as inactive instead of deleting it.
       parameters:
         - name: id
           in: path
           required: true
-          description: ID of the seat to cancel the reservation for.
+          description: ID of the seat to deactivate.
           schema:
             type: string
       responses:
+        '204':
+          description: Seat deactivated successfully
+        '404':
+          description: Seat not found
+        '500':
+          description: Internal server error
+
+  /v1/seats/search:
+    get:
+      tags:
+        - Cinema Seats
+      summary: Search for a seat by attributes
+      description: Retrieve a specific seat by room, row, and number.
+      parameters:
+        - name: room
+          in: query
+          required: true
+          description: Room where the seat is located.
+          schema:
+            type: string
+        - name: row
+          in: query
+          required: true
+          description: Row of the seat.
+          schema:
+            type: string
+        - name: number
+          in: query
+          required: true
+          description: Number of the seat.
+          schema:
+            type: integer
+      responses:
         '200':
-          description: Reservation canceled successfully
+          description: Seat details retrieved successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SeatResponse'
         '404':
-          description: Seat not found or not reserved
+          description: Seat not found
         '500':
           description: Internal server error
 
@@ -172,6 +198,9 @@ components:
             - available
             - reserved
             - occupied
+        isActive:
+          type: boolean
+          description: Indicates if the seat is active or deactivated
         createdAt:
           type: string
           format: date-time
@@ -200,6 +229,9 @@ components:
             - available
             - reserved
             - occupied
+        isActive:
+          type: boolean
+          description: Indicates if the seat is active or deactivated
       required:
         - room
         - row
@@ -228,6 +260,17 @@ components:
             - available
             - reserved
             - occupied
+        isActive:
+          type: boolean
+          description: Indicates if the seat is active or deactivated
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date
 
     ReserveSeatRequest:
       type: object

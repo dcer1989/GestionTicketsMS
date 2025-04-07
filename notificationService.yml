@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://api.server.test/v1
 paths:
-  /notifications/emails:
+  /v1/notifications/emails:
     get:
       tags:
         - Email Notifications
@@ -32,7 +32,7 @@ paths:
       responses:
         '201':
           description: Email notification sent
-  /notifications/emails/{id}:
+  /v1/notifications/emails/{id}:
     get:
       tags:
         - Email Notifications

@@ -4,12 +4,18 @@ info:
   version: '1.0'
 servers:
   - url: https://api.server.test/v1
+tags:
+  - name: Payments Management
+    description: Payment management for cinema tickets
+  - name: Process Payments
+    description: Process payments for ticket purchases
 paths:
-  /payments:
+  /v1/payments:
     get:
       tags:
-        - Payments
+        - Payments Management
       summary: Get all payments
+      description: Retrieve a list of all payments.
       responses:
         '200':
           description: List of all payments
@@ -21,31 +27,43 @@ paths:
                   $ref: '#/components/schemas/Payment'
     post:
       tags:
-        - Payments
+        - Payments Management
       summary: Create a new payment
+      description: Create a new payment record for a ticket.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Payment'
+              $ref: '#/components/schemas/PaymentRequest'
       responses:
         '201':
-          description: Payment created
-  /payments/{id}:
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /v1/payments/{id}:
     get:
       tags:
-        - Payments
+        - Payments Management
       summary: Get a payment by ID
+      description: Retrieve details of a specific payment by its ID.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID of the payment to retrieve.
           schema:
             type: string
       responses:
         '200':
-          description: Payment details
+          description: Payment details retrieved successfully
           content:
             application/json:
               schema:
@@ -54,12 +72,14 @@ paths:
           description: Payment not found
     put:
       tags:
-        - Payments
+        - Payments Management
       summary: Update a payment by ID
+      description: Update the details of a specific payment.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID of the payment to update.
           schema:
             type: string
       requestBody:
@@ -67,32 +87,40 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Payment'
+              $ref: '#/components/schemas/PaymentRequest'
       responses:
         '200':
-          description: Payment updated
+          description: Payment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
         '404':
           description: Payment not found
     delete:
       tags:
-        - Payments
+        - Payments Management
       summary: Delete a payment by ID
+      description: Remove a specific payment from the system.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID of the payment to delete.
           schema:
             type: string
       responses:
         '204':
-          description: Payment deleted
+          description: Payment deleted successfully
         '404':
           description: Payment not found
-  /payments/process:
+
+  /v1/payments/process:
     post:
       tags:
-        - Payments
+        - Process Payments
       summary: Process a payment
+      description: Process a payment for a specific ticket.
       requestBody:
         required: true
         content:
@@ -102,8 +130,15 @@ paths:
       responses:
         '200':
           description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
         '400':
           description: Invalid payment request
+        '500':
+          description: Internal server error
+
 components:
   schemas:
     Payment:
@@ -142,6 +177,7 @@ components:
           type: string
           format: date-time
           description: Last update date
+
     PaymentRequest:
       type: object
       properties:
@@ -160,3 +196,7 @@ components:
             - debit_card
             - paypal
             - cash
+      required:
+        - ticketId
+        - amount
+        - paymentMethod

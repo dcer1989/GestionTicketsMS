@@ -1,65 +1,81 @@
 openapi: '3.0.3'
 info:
-  title: Cinema Ticket Management API
+  title: Cinema Promotion Service API
   version: '1.0'
 servers:
   - url: https://api.server.test/v1
+tags:
+  - name: Promotions Management
+    description: Promotion management for cinema tickets
+  - name: Apply Promotions
+    description: Apply promotions to tickets or purchases
 paths:
-  /tickets:
+  /v1/promotions:
     get:
       tags:
-        - Cinema Tickets
-      summary: Get all tickets
+        - Promotions Management
+      summary: Get all promotions
+      description: Retrieve a list of all active promotions.
       responses:
         '200':
-          description: List of all tickets
+          description: List of all promotions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Ticket'
+                  $ref: '#/components/schemas/Promotion'
     post:
       tags:
-        - Cinema Tickets
-      summary: Create a new ticket
+        - Promotions Management
+      summary: Create a new promotion
+      description: Add a new promotion to the system.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ticket'
+              $ref: '#/components/schemas/PromotionRequest'
       responses:
         '201':
-          description: Ticket created
-  /tickets/{id}:
-    get:
-      tags:
-        - Cinema Tickets
-      summary: Get a ticket by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Ticket details
+          description: Promotion created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ticket'
-        '404':
-          description: Ticket not found
-    put:
+                $ref: '#/components/schemas/Promotion'
+
+  /v1/promotions/{id}:
+    get:
       tags:
-        - Cinema Tickets
-      summary: Update a ticket by ID
+        - Promotions Management
+      summary: Get a promotion by ID
+      description: Retrieve details of a specific promotion by its ID.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID of the promotion to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Promotion details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+        '404':
+          description: Promotion not found
+    put:
+      tags:
+        - Promotions Management
+      summary: Update a promotion by ID
+      description: Update the details of a specific promotion.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the promotion to update.
           schema:
             type: string
       requestBody:
@@ -67,59 +83,132 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ticket'
+              $ref: '#/components/schemas/PromotionRequest'
       responses:
         '200':
-          description: Ticket updated
+          description: Promotion updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
         '404':
-          description: Ticket not found
+          description: Promotion not found
     delete:
       tags:
-        - Cinema Tickets
-      summary: Delete a ticket by ID
+        - Promotions Management
+      summary: Delete a promotion by ID
+      description: Remove a specific promotion from the system.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID of the promotion to delete.
           schema:
             type: string
       responses:
         '204':
-          description: Ticket deleted
+          description: Promotion deleted successfully
         '404':
-          description: Ticket not found
+          description: Promotion not found
+
+  /v1/promotions/apply:
+    post:
+      tags:
+        - Apply Promotions 
+      summary: Apply a promotion
+      description: Apply a promotion to a specific ticket or purchase.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyPromotionRequest'
+      responses:
+        '200':
+          description: Promotion applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplyPromotionResponse'
+        '400':
+          description: Invalid promotion request
+        '404':
+          description: Promotion not found
+
 components:
   schemas:
-    Ticket:
+    Promotion:
       type: object
       properties:
         id:
           type: string
-          description: Unique ID of the ticket
-        programId:
+          description: Unique ID of the promotion
+        name:
           type: string
-          description: ID of the program the ticket is associated with
-        seatId:
+          description: Name of the promotion
+        description:
           type: string
-          description: ID of the seat reserved for the ticket
-        customerName:
-          type: string
-          description: Name of the customer
-        price:
+          description: Description of the promotion
+        discountPercentage:
           type: number
           format: float
-          description: Price of the ticket
-        status:
-          type: string
-          description: Status of the ticket
-          enum:
-            - purchased
-            - canceled
-        createdAt:
+          description: Discount percentage offered by the promotion
+        validFrom:
           type: string
           format: date-time
-          description: Creation date
-        updatedAt:
+          description: Start date of the promotion
+        validUntil:
           type: string
           format: date-time
-          description: Last update date
+          description: End date of the promotion
+
+    PromotionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the promotion
+        description:
+          type: string
+          description: Description of the promotion
+        discountPercentage:
+          type: number
+          format: float
+          description: Discount percentage offered by the promotion
+        validFrom:
+          type: string
+          format: date-time
+          description: Start date of the promotion
+        validUntil:
+          type: string
+          format: date-time
+          description: End date of the promotion
+      required:
+        - name
+        - discountPercentage
+        - validFrom
+        - validUntil
+
+    ApplyPromotionRequest:
+      type: object
+      properties:
+        ticketId:
+          type: string
+          description: ID of the ticket to apply the promotion to
+        promotionId:
+          type: string
+          description: ID of the promotion to apply
+      required:
+        - ticketId
+        - promotionId
+
+    ApplyPromotionResponse:
+      type: object
+      properties:
+        ticketId:
+          type: string
+          description: ID of the ticket the promotion was applied to
+        finalPrice:
+          type: number
+          format: float
+          description: Final price of the ticket after applying the promotion
