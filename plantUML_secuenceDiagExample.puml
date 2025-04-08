@@ -1,19 +1,53 @@
 @startuml SequenceDiagram
+
 actor Client
 participant "Frontend" as FE
-participant "Service A" as A
-participant "Service B" as B
+participant "Program Service" as ProgramService
+participant "Seat Service" as SeatService
+participant "Ticket Service" as TicketService
+participant "Payment Service" as PaymentService
+participant "Notification Service" as NotificationService
+participant "Promotion Service" as PromotionService
 participant "Message Queue" as MQ
-participant "Service C" as C
-participant "Database" as DB
 
-Client -> FE: HTTP Request
-FE -> A: Forward Request
-A -> B: REST API Call
-B --> A: REST API Response
-A ->> MQ: Publish Event
-MQ ->> C: Notify Service C
-C -> DB: Write Data
-DB --> C: Acknowledge Write
-C --> MQ: Acknowledge Event
+' Flujo: Cliente visualiza horarios de programas
+Client -> FE: Request Showtimes
+FE -> ProgramService: Get Showtimes
+ProgramService --> FE: Return Showtimes
+
+' Flujo: Cliente selecciona asiento y compra ticket
+Client -> FE: Select Seat and Purchase Ticket
+FE -> TicketService: Create Ticket
+TicketService -[#blue]-> SeatService: Check Seat Availability (Synchronous)
+SeatService --> TicketService: Seat Available
+TicketService -[#blue]-> PromotionService: Validate Promotion (Synchronous)
+PromotionService --> TicketService: Promotion Validated
+TicketService --> FE: Ticket Created
+
+' Flujo: Ticket publicado en la cola para procesamiento de pago
+TicketService -[#green]-> MQ: Publish Ticket Created
+MQ -[#green]-> PaymentService: Process Payment
+PaymentService -[#blue]-> TicketService: Update Ticket Status (Synchronous)
+TicketService --> PaymentService: Ticket Updated
+
+' Flujo: Publicación del estado del ticket
+TicketService -[#green]-> MQ: Publish Ticket Status Updated
+MQ -[#green]-> SeatService: Notify Ticket Status
+SeatService -[#blue]-> TicketService: Get Ticket Details (Synchronous)
+TicketService --> SeatService: Return Ticket Details
+SeatService --> SeatService: Update Seat Status
+SeatService -[#green]-> MQ: Publish Seat Status Updated
+
+' Flujo: Notificación al cliente
+MQ -[#green]-> NotificationService: Notify Payment Status
+NotificationService --> Client: Send Email Notification
+
+' Flujo: Actualización de asientos
+SeatService -[#green]-> MQ: Publish Seat Updates
+MQ -[#green]-> NotificationService: Notify Seat Updates
+
+' Flujo: Actualización de horarios de programas
+ProgramService -[#green]-> MQ: Publish Show Updates
+MQ -[#green]-> NotificationService: Notify Show Updates
+
 @enduml

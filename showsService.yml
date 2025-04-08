@@ -1,0 +1,262 @@
+openapi: '3.0.3'
+info:
+  title: Cinema Shows Management API
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: Shows
+    description: Shows management
+paths:
+
+  # CRUD Operations for Shows
+  /v1/shows:
+    get:
+      tags:
+        - Shows
+      summary: Get all shows
+      description: Retrieve a list of all shows in the cinema.
+      responses:
+        '200':
+          description: List of all shows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+    post:
+      tags:
+        - Shows
+      summary: Create a new show with showtimes
+      description: Add a new show to the cinema along with its showtimes.
+      security:
+        - bearerAuth: []  # Require authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowRequest'
+      responses:
+        '201':
+          description: Show and showtimes created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '500':
+          description: Internal server error
+
+  /v1/shows/{id}:
+    get:
+      tags:
+        - Shows
+      summary: Get a show by ID
+      description: Retrieve details of a specific show by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the show to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Show details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '404':
+          description: Show not found
+    put:
+      tags:
+        - Shows
+      summary: Update a show by ID
+      description: Update the details of a specific show.
+      security:
+        - bearerAuth: []  # Require authentication
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the show to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowRequest'
+      responses:
+        '200':
+          description: Show updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '404':
+          description: Show not found
+    delete:
+      tags:
+        - Shows
+      summary: Delete a show by ID
+      description: Remove a specific show from the system.
+      security:
+        - bearerAuth: []  # Require authentication
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the show to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Show deleted successfully
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '404':
+          description: Show not found
+
+  # Operations for Showtimes
+  /v1/shows/{showId}/showtimes:
+    get:
+      tags:
+        - Shows
+      summary: Get showtimes for a specific show
+      description: Retrieve the list of showtimes and rooms for a specific show by its ID.
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID of the show to retrieve showtimes for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of showtimes retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Showtime'
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '404':
+          description: Show not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: UUID  # Indicate the use of UUID tokens
+  schemas:
+    Show:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the show
+        title:
+          type: string
+          description: Title of the show
+        description:
+          type: string
+          description: Description of the show
+        price:
+          type: number
+          format: float
+          description: Base price of the show
+        showtimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Showtime'
+          description: List of showtimes, each with a room and time
+      required:
+        - title
+        - price
+        - showtimes
+
+    ShowRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the show
+        description:
+          type: string
+          description: Description of the show
+        price:
+          type: number
+          format: float
+          description: Base price of the show
+        showtimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShowtimeRequest'
+          description: List of showtimes, each with a room and time
+      required:
+        - title
+        - price
+        - showtimes
+
+    Showtime:
+      type: object
+      properties:
+        room:
+          type: string
+          description: Room where the show will be displayed
+        times:
+          type: array
+          items:
+            type: string
+            format: time
+            description: Show times in HH:mm:ss format
+      required:
+        - room
+        - times
+
+    ShowtimeRequest:
+      type: object
+      properties:
+        room:
+          type: string
+          description: Room where the show will be displayed
+        times:
+          type: array
+          items:
+            type: string
+            format: time
+            description: Show times in HH:mm:ss format
+      required:
+        - room
+        - times

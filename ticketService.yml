@@ -5,26 +5,12 @@ info:
 servers:
   - url: https://api.server.test/v1
 paths:
-  /tickets:
-    get:
-      tags:
-        - Cinema Tickets
-      summary: Get all tickets
-      description: Retrieve a list of all tickets.
-      responses:
-        '200':
-          description: List of all tickets
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ticket'
+  /v1/tickets:
     post:
       tags:
         - Cinema Tickets
       summary: Create a new ticket
-      description: Create a new ticket for a specific program and seat.
+      description: Create a new ticket for a specific show and seat.
       requestBody:
         required: true
         content:
@@ -43,7 +29,7 @@ paths:
         '500':
           description: Internal server error
 
-  /tickets/{id}:
+  /v1/tickets/{id}:
     get:
       tags:
         - Cinema Tickets
@@ -56,6 +42,7 @@ paths:
           description: ID of the ticket to retrieve.
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Ticket details retrieved successfully
@@ -63,37 +50,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TicketResponse'
-        '404':
-          description: Ticket not found
-        '500':
-          description: Internal server error
-    put:
-      tags:
-        - Cinema Tickets
-      summary: Update a ticket by ID
-      description: Update the details of a specific ticket.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the ticket to update.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketRequest'
-      responses:
-        '200':
-          description: Ticket updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketResponse'
-        '400':
-          description: Invalid input
         '404':
           description: Ticket not found
         '500':
@@ -110,42 +66,10 @@ paths:
           description: ID of the ticket to delete.
           schema:
             type: string
+            format: uuid
       responses:
         '204':
           description: Ticket deleted successfully
-        '404':
-          description: Ticket not found
-        '500':
-          description: Internal server error
-
-  /tickets/{id}/status:
-    put:
-      tags:
-        - Cinema Tickets
-      summary: Update ticket status
-      description: Update the status of a ticket (e.g., `purchased`, `canceled`).
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the ticket to update the status for.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketStatusRequest'
-      responses:
-        '200':
-          description: Ticket status updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketResponse'
-        '400':
-          description: Invalid input
         '404':
           description: Ticket not found
         '500':
@@ -158,18 +82,18 @@ components:
       properties:
         id:
           type: string
+          format: uuid
           description: Unique ID of the ticket
-        programId:  
-          type: string
-          description: ID of the program the ticket is associated with
         showId:
           type: string
+          format: uuid
           description: ID of the show the ticket is associated with
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
         seatId:
           type: string
+          format: uuid
           description: ID of the seat reserved for the ticket
         customerName:
           type: string
@@ -182,20 +106,20 @@ components:
           type: string
           description: Status of the ticket
           enum:
+            - pending
             - purchased
             - canceled
 
     TicketRequest:
       type: object
       properties:
-        programId:
-          type: string
-          description: ID of the program the ticket is associated with
         showId:
           type: string
+          format: uuid
           description: ID of the show the ticket is associated with
         seatId:
           type: string
+          format: uuid
           description: ID of the seat reserved for the ticket
         showTime:
           type: string
@@ -208,7 +132,6 @@ components:
           format: float
           description: Price of the ticket
       required:
-        - programId
         - seatId
         - customerName
         - price
@@ -218,18 +141,18 @@ components:
       properties:
         id:
           type: string
+          format: uuid
           description: Unique ID of the ticket
-        programId:
-          type: string
-          description: ID of the program the ticket is associated with
         showId:
           type: string
+          format: uuid
           description: ID of the show the ticket is associated with
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
         seatId:
           type: string
+          format: uuid
           description: ID of the seat reserved for the ticket
         customerName:
           type: string
@@ -242,25 +165,6 @@ components:
           type: string
           description: Status of the ticket
           enum:
+            - pending
             - purchased
             - canceled
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation date
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update date
-
-    TicketStatusRequest:
-      type: object
-      properties:
-        status:
-          type: string
-          description: New status of the ticket
-          enum:
-            - purchased
-            - canceled
-      required:
-        - status

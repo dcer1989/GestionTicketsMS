@@ -10,6 +10,7 @@ package "Microservices" {
     [Ticket Service] as TicketService
     [Payment Service] as PaymentService
     [Notification Service] as NotificationService
+    [Promotion Service] as PromotionService
 }
 
 package "Databases" {
@@ -18,6 +19,7 @@ package "Databases" {
     [Ticket DB] as TicketDB
     [Payment DB] as PaymentDB
     [Notification DB] as NotificationDB
+    [Promotion DB] as PromotionDB
 }
 
 package "Infrastructure" {
@@ -30,6 +32,7 @@ SeatService --> SeatDB : Manage Seats
 TicketService --> TicketDB : Manage Tickets
 PaymentService --> PaymentDB : Store Payment Records
 NotificationService --> NotificationDB : Log Notifications
+PromotionService --> PromotionDB : Manage Promotions
 
 ' Relaciones entre los microservicios
 Frontend --> ProgramService : View Showtimes
@@ -37,14 +40,23 @@ Frontend --> SeatService : Check Seat Availability
 Frontend --> TicketService : Purchase Tickets
 Frontend --> PaymentService : Process Payments
 Frontend --> NotificationService : Receive Notifications
+Frontend --> PromotionService : View Promotions
 
-TicketService --> PaymentService : Request Payment
-PaymentService --> NotificationService : Send Payment Confirmation
-TicketService --> NotificationService : Send Ticket Confirmation
+' Comunicaciones síncronas (en azul)
+TicketService -[#blue]-> SeatService : Check Seat Availability (Synchronous)
+TicketService -[#blue]-> PromotionService : Validate Promotion (Synchronous)
+PaymentService -[#blue]-> TicketService : Update Ticket Status (Synchronous)
 
-' Comunicación asíncrona
-ProgramService --> MessageQueue : Publish Show Updates
-SeatService --> MessageQueue : Publish Seat Updates
-MessageQueue --> NotificationService : Notify Users
+' Comunicaciones asíncronas (en verde)
+ProgramService -[#green]-> MessageQueue : Publish Show Updates
+SeatService -[#green]-> MessageQueue : Publish Seat Updates
+TicketService -[#green]-> MessageQueue : Publish Ticket Created
+MessageQueue -[#green]-> PaymentService : Process Payment
+PaymentService -[#green]-> MessageQueue : Publish Payment Processed
+MessageQueue -[#green]-> TicketService : Notify Payment Status
+TicketService -[#green]-> MessageQueue : Publish Ticket Status Updated
+MessageQueue -[#green]-> SeatService : Notify Ticket Status
+SeatService -[#green]-> MessageQueue : Publish Seat Status Updated
+MessageQueue -[#green]-> NotificationService : Notify Users
 
 @enduml

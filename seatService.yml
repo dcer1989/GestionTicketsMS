@@ -12,12 +12,13 @@ paths:
     get:
       tags:
         - Cinema Seats
-      summary: Get all seats
-      description: Retrieve a list of all seats in the cinema, with optional filters.
+      summary: Get all seats or search for specific seats
+      description: Retrieve a list of all seats in the cinema or search for specific seats by room, row, and number.
       parameters:
         - name: room
           in: query
-          description: Filter by room.
+          required: true  # Room is now required
+          description: Filter by room or search for a specific room.
           schema:
             type: string
         - name: status
@@ -27,38 +28,25 @@ paths:
             type: string
         - name: row
           in: query
-          description: Filter by row.
+          description: Filter by row or search for a specific row.
           schema:
             type: string
+        - name: number
+          in: query
+          description: Search for a specific seat by number.
+          schema:
+            type: integer
       responses:
         '200':
-          description: List of filtered seats
+          description: List of filtered seats or specific seat details
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Seat'
-    post:
-      tags:
-        - Cinema Seats
-      summary: Create a new seat
-      description: Add a new seat to the cinema.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SeatRequest'
-      responses:
-        '201':
-          description: Seat created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SeatResponse'
-        '400':
-          description: Invalid input
+        '404':
+          description: Seat not found
         '500':
           description: Internal server error
 
@@ -86,37 +74,6 @@ paths:
           description: Seat not found
         '500':
           description: Internal server error
-    put:
-      tags:
-        - Cinema Seats
-      summary: Update a seat by ID
-      description: Update the details of a specific seat in the cinema, including its status.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the seat to update.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SeatRequest'
-      responses:
-        '200':
-          description: Seat updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SeatResponse'
-        '400':
-          description: Invalid input
-        '404':
-          description: Seat not found
-        '500':
-          description: Internal server error
     delete:
       tags:
         - Cinema Seats
@@ -132,43 +89,6 @@ paths:
       responses:
         '204':
           description: Seat deactivated successfully
-        '404':
-          description: Seat not found
-        '500':
-          description: Internal server error
-
-  /v1/seats/search:
-    get:
-      tags:
-        - Cinema Seats
-      summary: Search for a seat by attributes
-      description: Retrieve a specific seat by room, row, and number.
-      parameters:
-        - name: room
-          in: query
-          required: true
-          description: Room where the seat is located.
-          schema:
-            type: string
-        - name: row
-          in: query
-          required: true
-          description: Row of the seat.
-          schema:
-            type: string
-        - name: number
-          in: query
-          required: true
-          description: Number of the seat.
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Seat details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SeatResponse'
         '404':
           description: Seat not found
         '500':
@@ -201,42 +121,6 @@ components:
         isActive:
           type: boolean
           description: Indicates if the seat is active or deactivated
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation date
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update date
-
-    SeatRequest:
-      type: object
-      properties:
-        room:
-          type: string
-          description: Room where the seat is located
-        row:
-          type: string
-          description: Row of the seat
-        number:
-          type: integer
-          description: Seat number
-        status:
-          type: string
-          description: Status of the seat
-          enum:
-            - available
-            - reserved
-            - occupied
-        isActive:
-          type: boolean
-          description: Indicates if the seat is active or deactivated
-      required:
-        - room
-        - row
-        - number
-        - status
 
     SeatResponse:
       type: object
@@ -263,20 +147,3 @@ components:
         isActive:
           type: boolean
           description: Indicates if the seat is active or deactivated
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation date
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update date
-
-    ReserveSeatRequest:
-      type: object
-      properties:
-        customerName:
-          type: string
-          description: Name of the customer reserving the seat
-      required:
-        - customerName
