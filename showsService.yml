@@ -34,8 +34,6 @@ paths:
         - Shows
       summary: Create a new show with showtimes
       description: Add a new show to the cinema along with its showtimes.
-      security:
-        - bearerAuth: []  # Require authentication
       requestBody:
         required: true
         content:
@@ -89,8 +87,6 @@ paths:
         - Shows
       summary: Update a show by ID
       description: Update the details of a specific show.
-      security:
-        - bearerAuth: []  # Require authentication
       parameters:
         - name: id
           in: path
@@ -124,8 +120,6 @@ paths:
         - Shows
       summary: Delete a show by ID
       description: Remove a specific show from the system.
-      security:
-        - bearerAuth: []  # Require authentication
       parameters:
         - name: id
           in: path
@@ -174,11 +168,6 @@ paths:
           description: Show not found
 
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: UUID  # Indicate the use of UUID tokens
   schemas:
     Show:
       type: object
@@ -192,10 +181,6 @@ components:
         description:
           type: string
           description: Description of the show
-        price:
-          type: number
-          format: float
-          description: Base price of the show
         showtimes:
           type: array
           items:
@@ -215,10 +200,6 @@ components:
         description:
           type: string
           description: Description of the show
-        price:
-          type: number
-          format: float
-          description: Base price of the show
         showtimes:
           type: array
           items:
@@ -226,7 +207,6 @@ components:
           description: List of showtimes, each with a room and time
       required:
         - title
-        - price
         - showtimes
 
     Showtime:

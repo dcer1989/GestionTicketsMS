@@ -11,20 +11,6 @@ tags:
     description: Process payments for ticket purchases
 paths:
   /v1/payments:
-    get:
-      tags:
-        - Payments Management
-      summary: Get all payments
-      description: Retrieve a list of all payments.
-      responses:
-        '200':
-          description: List of all payments
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Payment'
     post:
       tags:
         - Payments Management
@@ -64,33 +50,6 @@ paths:
       responses:
         '200':
           description: Payment details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '404':
-          description: Payment not found
-    put:
-      tags:
-        - Payments Management
-      summary: Update a payment by ID
-      description: Update the details of a specific payment.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the payment to update.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentRequest'
-      responses:
-        '200':
-          description: Payment updated successfully
           content:
             application/json:
               schema:
@@ -169,14 +128,6 @@ components:
             - debit_card
             - paypal
             - cash
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation date
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update date
 
     PaymentRequest:
       type: object

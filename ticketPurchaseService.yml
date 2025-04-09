@@ -10,7 +10,7 @@ paths:
       tags:
         - Cinema Tickets
       summary: Create a new ticket
-      description: Create a new ticket for a specific show and seat.
+      description: Create a new ticket for a specific show and seats.
       requestBody:
         required: true
         content:
@@ -91,10 +91,12 @@ components:
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
-        seatId:
-          type: string
-          format: uuid
-          description: ID of the seat reserved for the ticket
+        seatIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of IDs of the seats reserved for the ticket
         customerName:
           type: string
           description: Name of the customer
@@ -117,10 +119,12 @@ components:
           type: string
           format: uuid
           description: ID of the show the ticket is associated with
-        seatId:
-          type: string
-          format: uuid
-          description: ID of the seat reserved for the ticket
+        seatIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of IDs of the seats reserved for the ticket
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
@@ -132,7 +136,7 @@ components:
           format: float
           description: Price of the ticket
       required:
-        - seatId
+        - seatIds
         - customerName
         - price
 
@@ -150,10 +154,12 @@ components:
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
-        seatId:
-          type: string
-          format: uuid
-          description: ID of the seat reserved for the ticket
+        seatIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of IDs of the seats reserved for the ticket
         customerName:
           type: string
           description: Name of the customer
