@@ -5,12 +5,12 @@ info:
 servers:
   - url: https://api.server.test/v1
 paths:
-  /v1/tickets:
+  /v1/tickets/purchase:
     post:
       tags:
         - Cinema Tickets
-      summary: Create a new ticket
-      description: Create a new ticket for a specific show and seats.
+      summary: Purchase a ticket
+      description: Reserve seats, create a ticket, and process payment in a single request.
       requestBody:
         required: true
         content:
@@ -97,9 +97,6 @@ components:
             type: string
             format: uuid
           description: List of IDs of the seats reserved for the ticket
-        customerName:
-          type: string
-          description: Name of the customer
         price:
           type: number
           format: float
@@ -128,17 +125,31 @@ components:
         showTime:
           type: string
           description: Showtime of the show the ticket is associated with
-        customerName:
+        email:
           type: string
-          description: Name of the customer
-        price:
-          type: number
-          format: float
-          description: Price of the ticket
+          format: email
+          description: Email address of the customer for notifications
+        paymentDetails:
+          type: object
+          description: Payment details for processing the ticket purchase
+          properties:
+            cardNumber:
+              type: string
+              description: Credit or debit card number
+            cardHolderName:
+              type: string
+              description: Name of the cardholder
+            expirationDate:
+              type: string
+              description: Expiration date of the card (MM/YY format)
+            cvv:
+              type: string
+              description: CVV code of the card
       required:
+        - showId
         - seatIds
-        - customerName
-        - price
+        - email
+        - paymentDetails
 
     TicketResponse:
       type: object
@@ -152,7 +163,15 @@ components:
           format: uuid
           description: ID of the show the ticket is associated with
         showTime:
-          type: string
+          type: object
+          properties:
+            room:
+              type: string
+              description: Room where the show will be displayed
+            time:
+              type: string
+              format: time
+              description: Time of the show in HH:mm:ss format
           description: Showtime of the show the ticket is associated with
         seatIds:
           type: array
@@ -160,9 +179,6 @@ components:
             type: string
             format: uuid
           description: List of IDs of the seats reserved for the ticket
-        customerName:
-          type: string
-          description: Name of the customer
         price:
           type: number
           format: float

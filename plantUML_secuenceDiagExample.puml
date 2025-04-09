@@ -15,34 +15,45 @@ Client -> FE: Request Showtimes
 FE -> ShowsService: Get Showtimes
 ShowsService --> FE: Return Showtimes
 
-' Flujo: Cliente selecciona asiento y compra ticket
-Client -> FE: Select Seat and Purchase Ticket
-FE -> SeatBookingService: Book seats
-SeatBookingService --> SeatBookingService: Update seats status
-SeatBookingService --> FE : Seats Booked
-FE -> TicketPurchaseService: Purchase Ticket (with Promotion ?)
-TicketPurchaseService -[#blue]-> PromotionService: Validate Promotion (Synchronous)
+' Flujo: Cliente selecciona asiento
+Client -> FE: Reserve Seat and Purchase Ticket for reserved seats
+FE -> SeatBookingService: Get Seats
+SeatBookingService --> FE: Return Seats
+
+' Flujo: Cliente selecciona compra ticket
+FE -> SeatBookingService: Reserve seats
+SeatBookingService --> FE : Seats Reserved
+FE -> TicketPurchaseService: Purchase Ticket (has Promotion?)
+TicketPurchaseService -> PromotionService: Validate Promotion (Synchronous)
 PromotionService --> TicketPurchaseService: Promotion Validated
-TicketPurchaseService --> TicketPurchaseService: Create Ticket(s) Purchase with Promotion applied
-TicketPurchaseService -[#green]-> MQ: Publish TicketCreated with final price
+TicketPurchaseService -> TicketPurchaseService: Create Ticket(s) Purchase with Promotion applied
+TicketPurchaseService -> SeatBookingService: Validate Seats (seatIds, showId) 
+SeatBookingService -> SeatBookingService: Check seat status and expiration
 
-' Procesamiento del pago
-MQ -[#green]-> PaymentService: Consume TicketCreated
-PaymentService --> PaymentService: Process Payment (pending/completed/failed)
-PaymentService -[#green]-> MQ: Publish PaymentProcessed
+alt All seats valid
+    SeatBookingService --> TicketPurchaseService: Validation successful
+    TicketPurchaseService -[#green]-> MQ: Publish TicketCreated with final price
 
-' Actualización del estado del ticket
-MQ -[#green]-> TicketPurchaseService: Consume PaymentProcessed
-TicketPurchaseService --> TicketPurchaseService: Update Ticket Status (pending/purchased/canceled)
-TicketPurchaseService -[#green]-> MQ: Publish Ticket (Status Updated)
+    ' Procesamiento del pago
+    MQ -[#green]-> PaymentService: Consume TicketCreated
+    PaymentService -> PaymentService: Process Payment (completed/failed)
+    PaymentService -[#green]-> MQ: Publish PaymentProcessed
 
-' Notificación al cliente
-MQ -[#green]-> NotificationService: Consume PaymentProcessed
-NotificationService --> Client: Send Payment Notification
+    ' Actualización del estado del ticket
+    MQ -[#green]-> TicketPurchaseService: Consume PaymentProcessed
+    TicketPurchaseService -> TicketPurchaseService: Update Ticket Status (purchased/canceled)
+    TicketPurchaseService -[#green]-> MQ: Publish TicketPurchased (Status Updated)
 
-' Flujo: Actualización de asientos
-MQ -[#green]-> SeatBookingService: Consume Ticket (Status Updated)
-SeatBookingService --> SeatBookingService: Update Seat Status (avaible/reserved/occupied)
-SeatBookingService -[#green]-> MQ: Publish Seat Status Updated
+    ' Flujo: Actualización de asientos
+    MQ -[#green]-> SeatBookingService: Consume TicketPurchased
+    SeatBookingService -> SeatBookingService: Update seats status (occupied/available)
+
+    ' Notificación al cliente
+    MQ -[#green]-> NotificationService: Consume PaymentProcessed
+    NotificationService --> Client: Send Payment Notification
+else Some seats invalid
+    SeatBookingService --> TicketPurchaseService: Validation failed (invalidSeats)
+    TicketPurchaseService --> FE: Return error
+end
 
 @enduml

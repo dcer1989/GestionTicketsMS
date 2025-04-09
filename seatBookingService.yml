@@ -7,20 +7,20 @@ servers:
 tags:
   - name: Cinema Seats
     description: Seat management for cinema rooms
+  - name: Seat Reservation
+    description: Reserve and release seats for shows
+  - name: Seat Release
+    description: Release reserved seats
+  - name: Seat Validation
+    description: Validate the status of seats in the cinema
 paths:
   /v1/seats:
     get:
       tags:
         - Cinema Seats
       summary: Get all seats or search for specific seats
-      description: Retrieve a list of all seats in the cinema or search for specific seats by room, row, and number.
+      description: Retrieve a list of all seats in the cinema or search for specific seats by row, and number.
       parameters:
-        - name: room
-          in: query
-          required: true  # Room is now required
-          description: Filter by room or search for a specific room.
-          schema:
-            type: string
         - name: status
           in: query
           description: Filter by seat status (e.g., available, reserved, occupied).
@@ -94,6 +94,164 @@ paths:
         '500':
           description: Internal server error
 
+  /v1/seats/reserve:
+    post:
+      tags:
+        - Seat Reservation
+      summary: Reserve seats temporarily
+      description: Reserve one or more seats for a specific show for a limited time.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                seatIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List of seat IDs to reserve
+                showId:
+                  type: string
+                  format: uuid
+                  description: ID of the show the seats are reserved for
+                reservationExpiresAt:
+                  type: string
+                  format: date-time
+                  description: Expiration time for the reservation
+              required:
+                - seatIds
+                - showId
+                - reservationExpiresAt
+      responses:
+        '200':
+          description: Seats reserved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reserved:
+                    type: boolean
+                    description: Indicates if the reservation was successful
+                  seatIds:
+                    type: array
+                    items:
+                      type: string
+                    description: List of seat IDs that were successfully reserved
+                  reservationExpiresAt:
+                    type: string
+                    format: date-time
+                    description: Expiration time for the reservation
+        '400':
+          description: Invalid input
+        '404':
+          description: One or more seats not found
+        '409':
+          description: One or more seats are already reserved or occupied
+        '500':
+          description: Internal server error
+
+  /v1/seats/release:
+    post:
+      tags:
+        - Seat Release
+      summary: Release reserved seats
+      description: Release one or more seats that were previously reserved.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                seatIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List of seat IDs to release
+                showId:
+                  type: string
+                  format: uuid
+                  description: ID of the show the seats are associated with
+              required:
+                - seatIds
+                - showId
+      responses:
+        '200':
+          description: Seats released successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  released:
+                    type: boolean
+                    description: Indicates if the release was successful
+                  seatIds:
+                    type: array
+                    items:
+                      type: string
+                    description: List of seat IDs that were successfully released
+        '400':
+          description: Invalid input
+        '404':
+          description: One or more seats not found
+        '500':
+          description: Internal server error
+
+  /v1/seats/validate:
+    post:
+      tags:
+        - Seat Validation
+      summary: Validate the status of seats
+      description: Validate if the provided seats are reserved and their reservation has not expired.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                seatIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List of seat IDs to validate
+                showId:
+                  type: string
+                  format: uuid
+                  description: ID of the show the seats are associated with
+              required:
+                - seatIds
+                - showId
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    description: Indicates if all seats are valid
+                  invalidSeats:
+                    type: array
+                    items:
+                      type: string
+                    description: List of seat IDs that are not valid
+        '400':
+          description: Invalid input
+        '404':
+          description: One or more seats not found
+        '500':
+          description: Internal server error
+
 components:
   schemas:
     Seat:
@@ -102,9 +260,6 @@ components:
         id:
           type: string
           description: Unique ID of the seat
-        room:
-          type: string
-          description: Room where the seat is located
         row:
           type: string
           description: Row of the seat
@@ -118,6 +273,10 @@ components:
             - available
             - reserved
             - occupied
+        reservationExpiresAt:
+          type: string
+          format: date-time
+          description: Expiration time for the reservation (if reserved)
         isActive:
           type: boolean
           description: Indicates if the seat is active or deactivated
@@ -128,9 +287,6 @@ components:
         id:
           type: string
           description: Unique ID of the seat
-        room:
-          type: string
-          description: Room where the seat is located
         row:
           type: string
           description: Row of the seat

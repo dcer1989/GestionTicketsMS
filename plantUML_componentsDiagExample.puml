@@ -5,21 +5,21 @@ package "Client" {
 }
 
 package "Microservices" {
-    [Program Service] as ProgramService
-    [Seat Service] as SeatService
-    [Ticket Service] as TicketService
+    [Shows Service] as ShowsService
+    [Seat Booking Service] as SeatBookingService
+    [Ticket Purchase Service] as TicketPurchaseService
     [Payment Service] as PaymentService
     [Notification Service] as NotificationService
     [Promotion Service] as PromotionService
 }
 
 package "Databases" {
-    [Program DB] as ProgramDB
-    [Seat DB] as SeatDB
-    [Ticket DB] as TicketDB
-    [Payment DB] as PaymentDB
-    [Notification DB] as NotificationDB
-    [Promotion DB] as PromotionDB
+    [Shows DB] as ShowsDB
+    [Seats DB] as SeatsDB
+    [Tickets DB] as TicketsDB
+    [Payments DB] as PaymentsDB
+    [Notifications DB] as NotificationsDB
+    [Promotions DB] as PromotionsDB
 }
 
 package "Infrastructure" {
@@ -27,36 +27,34 @@ package "Infrastructure" {
 }
 
 ' Relaciones entre los microservicios y sus bases de datos
-ProgramService --> ProgramDB : Store Showtimes
-SeatService --> SeatDB : Manage Seats
-TicketService --> TicketDB : Manage Tickets
-PaymentService --> PaymentDB : Store Payment Records
-NotificationService --> NotificationDB : Log Notifications
-PromotionService --> PromotionDB : Manage Promotions
+ShowsService --> ShowsDB : Manage Shows
+SeatBookingService --> SeatsDB : Manage Seats
+TicketPurchaseService --> TicketsDB : Manage Tickets
+PaymentService --> PaymentsDB : Manage Payments
+NotificationService --> NotificationsDB : Log Notifications
+PromotionService --> PromotionsDB : Manage Promotions
 
 ' Relaciones entre los microservicios
-Frontend --> ProgramService : View Showtimes
-Frontend --> SeatService : Check Seat Availability
-Frontend --> TicketService : Purchase Tickets
-Frontend --> PaymentService : Process Payments
+Frontend --> ShowsService : View Showtimes
+Frontend --> SeatBookingService : Check Seat Availability
+Frontend -up-> TicketPurchaseService : Purchase Tickets
 Frontend --> NotificationService : Receive Notifications
-Frontend --> PromotionService : View Promotions
+' Frontend --> PromotionService : View Promotions
 
 ' Comunicaciones síncronas (en azul)
-TicketService -[#blue]-> SeatService : Check Seat Availability (Synchronous)
-TicketService -[#blue]-> PromotionService : Validate Promotion (Synchronous)
-PaymentService -[#blue]-> TicketService : Update Ticket Status (Synchronous)
+TicketPurchaseService -[#blue]-> SeatBookingService : Reserve Seats
+TicketPurchaseService -[#blue]-> SeatBookingService : Validate Seats
+TicketPurchaseService -[#blue]-> PromotionService : Validate Promotion
+PaymentService -[#blue]-> TicketPurchaseService : Update Ticket Status
 
 ' Comunicaciones asíncronas (en verde)
-ProgramService -[#green]-> MessageQueue : Publish Show Updates
-SeatService -[#green]-> MessageQueue : Publish Seat Updates
-TicketService -[#green]-> MessageQueue : Publish Ticket Created
-MessageQueue -[#green]-> PaymentService : Process Payment
-PaymentService -[#green]-> MessageQueue : Publish Payment Processed
-MessageQueue -[#green]-> TicketService : Notify Payment Status
-TicketService -[#green]-> MessageQueue : Publish Ticket Status Updated
-MessageQueue -[#green]-> SeatService : Notify Ticket Status
-SeatService -[#green]-> MessageQueue : Publish Seat Status Updated
+TicketPurchaseService -[#green]-> MessageQueue : Publish TicketCreated
+MessageQueue -down[#green]-> PaymentService : Process Payment
+PaymentService -[#green]-> MessageQueue : Publish PaymentProcessed
+MessageQueue -[#green]-> TicketPurchaseService : Notify Payment Status
+TicketPurchaseService -up[#green]-> MessageQueue : Publish TicketPurchased
+MessageQueue -[#green]-> SeatBookingService : Notify Ticket Status
+SeatBookingService -[#green]-> MessageQueue : Publish Seat Status Updated
 MessageQueue -[#green]-> NotificationService : Notify Users
 
 @enduml
