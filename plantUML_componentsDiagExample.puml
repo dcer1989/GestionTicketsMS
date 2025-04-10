@@ -34,22 +34,16 @@ PaymentService --> PaymentsDB : Manage Payments
 NotificationService --> NotificationsDB : Log Notifications
 PromotionService --> PromotionsDB : Manage Promotions
 
-' Relaciones entre los microservicios
-Frontend --> ShowsService : View Showtimes
-Frontend --> SeatBookingService : Check Seat Availability
-Frontend -up-> TicketPurchaseService : Purchase Tickets
-Frontend --> NotificationService : Receive Notifications
-' Frontend --> PromotionService : View Promotions
-
 ' Comunicaciones síncronas (en azul)
-TicketPurchaseService -[#blue]-> SeatBookingService : Reserve Seats
+Frontend -[#blue]-> ShowsService : View Showtimes
+Frontend -[#blue]-> SeatBookingService : Reserve Seats
+Frontend -up[#blue]-> TicketPurchaseService : Purchase Tickets
 TicketPurchaseService -[#blue]-> SeatBookingService : Validate Seats
 TicketPurchaseService -[#blue]-> PromotionService : Validate Promotion
-PaymentService -[#blue]-> TicketPurchaseService : Update Ticket Status
 
 ' Comunicaciones asíncronas (en verde)
 TicketPurchaseService -[#green]-> MessageQueue : Publish TicketCreated
-MessageQueue -down[#green]-> PaymentService : Process Payment
+MessageQueue -[#green]-> PaymentService : Process Payment
 PaymentService -[#green]-> MessageQueue : Publish PaymentProcessed
 MessageQueue -[#green]-> TicketPurchaseService : Notify Payment Status
 TicketPurchaseService -up[#green]-> MessageQueue : Publish TicketPurchased
