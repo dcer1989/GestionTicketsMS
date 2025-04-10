@@ -8,9 +8,7 @@ tags:
   - name: Cinema Seats
     description: Seat management for cinema rooms
   - name: Seat Reservation
-    description: Reserve and release seats for shows
-  - name: Seat Release
-    description: Release reserved seats
+    description: Reserve seats for shows
   - name: Seat Validation
     description: Validate the status of seats in the cinema
 paths:
@@ -117,14 +115,9 @@ paths:
                   type: string
                   format: uuid
                   description: ID of the show the seats are reserved for
-                reservationExpiresAt:
-                  type: string
-                  format: date-time
-                  description: Expiration time for the reservation
               required:
                 - seatIds
                 - showId
-                - reservationExpiresAt
       responses:
         '200':
           description: Seats reserved successfully
@@ -151,55 +144,6 @@ paths:
           description: One or more seats not found
         '409':
           description: One or more seats are already reserved or occupied
-        '500':
-          description: Internal server error
-
-  /v1/seats/release:
-    post:
-      tags:
-        - Seat Release
-      summary: Release reserved seats
-      description: Release one or more seats that were previously reserved.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                seatIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-                  description: List of seat IDs to release
-                showId:
-                  type: string
-                  format: uuid
-                  description: ID of the show the seats are associated with
-              required:
-                - seatIds
-                - showId
-      responses:
-        '200':
-          description: Seats released successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  released:
-                    type: boolean
-                    description: Indicates if the release was successful
-                  seatIds:
-                    type: array
-                    items:
-                      type: string
-                    description: List of seat IDs that were successfully released
-        '400':
-          description: Invalid input
-        '404':
-          description: One or more seats not found
         '500':
           description: Internal server error
 
