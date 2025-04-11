@@ -27,7 +27,7 @@ FE -> TicketPurchaseService: Purchase Ticket (has Promotion?)
 TicketPurchaseService -> PromotionService: Validate Promotion (Synchronous)
 PromotionService --> TicketPurchaseService: Promotion Validated
 TicketPurchaseService -> TicketPurchaseService: Create Ticket(s) Purchase with Promotion applied
-TicketPurchaseService -> SeatBookingService: Validate Seats (seatIds, showId) 
+TicketPurchaseService -> SeatBookingService: Validate Seats (seatIds, showId, showtime) 
 SeatBookingService -> SeatBookingService: Check seat status and expiration
 
 alt All seats valid

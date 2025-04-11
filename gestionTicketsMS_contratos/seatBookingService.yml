@@ -115,9 +115,13 @@ paths:
                   type: string
                   format: uuid
                   description: ID of the show the seats are reserved for
+                showtime:
+                  $ref: './showsService.yml#/components/schemas/Showtime'
+                  description: Showtime details including room and time
               required:
                 - seatIds
                 - showId
+                - showtime
       responses:
         '200':
           description: Seats reserved successfully
