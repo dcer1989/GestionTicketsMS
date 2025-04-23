@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  postgres:
+  showsService_postgres:
     image: postgres:14
-    container_name: postgres-container
+    container_name: showsService-postgres-container
     restart: always
     environment:
       POSTGRES_USER: root
@@ -12,7 +12,35 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - showsService_postgres_data:/var/lib/postgresql/data
+
+  seatBookingService_mongo:
+    image: mongo:6
+    container_name: seatBookingService-mongo-container
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - seatBookingService_mongo_data:/data/db
+
+  ticketPurchaseService_postgres:
+    image: postgres:14
+    container_name: ticketPurchaseService-postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ticketPurchaseServicedb
+      DEFAULT_ENCODING: UTF-8
+    ports:
+      - "5433:5432"
+    volumes:
+      - ticketPurchaseService_postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  showsService_postgres_data:
+  seatBookingService_mongo_data:
+  ticketPurchaseService_postgres_data:

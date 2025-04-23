@@ -1,0 +1,31 @@
+server:
+  port: 9000 # Puerto único para el gateway
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      routes:
+        - id: shows-service
+          uri: lb://showsService
+          predicates:
+            - Path=/v1/shows/**
+        - id: ticket-purchase-service
+          uri: lb://ticketPurchaseService
+          predicates:
+            - Path=/v1/tickets/**
+        - id: seat-booking-service
+          uri: lb://seatBookingService
+          predicates:
+            - Path=/v1/seats/**
+      discovery:
+        locator:
+          enabled: true # Habilita la localización de servicios registrados en Eureka
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/ # URL del servidor Eureka
+#  instance:
+#    prefer-ip-address: true

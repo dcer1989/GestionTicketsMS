@@ -167,6 +167,40 @@ paths:
         '404':
           description: Show not found
 
+  /v1/shows/{showId}/showtimes/{showtimeId}:
+    get:
+      tags:
+        - Shows
+      summary: Get a specific showtime for a specific show
+      description: Retrieve details of a specific showtime for a specific show by their IDs.
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID of the show to retrieve the showtime for.
+          schema:
+            type: string
+            format: uuid
+        - name: showtimeId
+          in: path
+          required: true
+          description: ID of the showtime to retrieve.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Showtime details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Showtime'
+        '401':
+          description: Unauthorized. Authentication is required.
+        '403':
+          description: Forbidden. You do not have permission to perform this action.
+        '404':
+          description: Show or showtime not found
+
 components:
   schemas:
     Show:
@@ -204,7 +238,7 @@ components:
         showtimes:
           type: array
           items:
-            $ref: '#/components/schemas/ShowtimeRequest'
+            $ref: '#/components/schemas/Showtime'
           description: List of showtimes, each with a room and time
       required:
         - title
@@ -213,6 +247,9 @@ components:
     Showtime:
       type: object
       properties:
+        id:
+          type: integer
+          description: Unique identifier for the showtime
         room:
           type: string
           description: Room where the show will be displayed
@@ -221,19 +258,6 @@ components:
           format: time
           description: Show time in HH:mm:ss format
       required:
-        - room
-        - time
-
-    ShowtimeRequest:
-      type: object
-      properties:
-        room:
-          type: string
-          description: Room where the show will be displayed
-        time:
-          type: string
-          format: time
-          description: Show time in HH:mm:ss format
-      required:
+        - id
         - room
         - time

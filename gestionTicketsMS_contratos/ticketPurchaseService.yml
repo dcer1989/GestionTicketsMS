@@ -29,102 +29,85 @@ paths:
         '500':
           description: Internal server error
 
-  /v1/tickets/{id}:
-    get:
-      tags:
-        - Cinema Tickets
-      summary: Get a ticket by ID
-      description: Retrieve details of a specific ticket by its ID.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the ticket to retrieve.
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Ticket details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketResponse'
-        '404':
-          description: Ticket not found
-        '500':
-          description: Internal server error
-    delete:
-      tags:
-        - Cinema Tickets
-      summary: Delete a ticket by ID
-      description: Remove a specific ticket from the system.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the ticket to delete.
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: Ticket deleted successfully
-        '404':
-          description: Ticket not found
-        '500':
-          description: Internal server error
+  # /v1/tickets/{id}:
+  #   get:
+  #     tags:
+  #       - Cinema Tickets
+  #     summary: Get a ticket by ID
+  #     description: Retrieve details of a specific ticket by its ID.
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         required: true
+  #         description: ID of the ticket to retrieve.
+  #         schema:
+  #           type: string
+  #           format: uuid
+  #     responses:
+  #       '200':
+  #         description: Ticket details retrieved successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/TicketResponse'
+  #       '404':
+  #         description: Ticket not found
+  #       '500':
+  #         description: Internal server error
+  #   delete:
+  #     tags:
+  #       - Cinema Tickets
+  #     summary: Delete a ticket by ID
+  #     description: Remove a specific ticket from the system.
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         required: true
+  #         description: ID of the ticket to delete.
+  #         schema:
+  #           type: string
+  #           format: uuid
+  #     responses:
+  #       '204':
+  #         description: Ticket deleted successfully
+  #       '404':
+  #         description: Ticket not found
+  #       '500':
+  #         description: Internal server error
 
 components:
   schemas:
-    Ticket:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique ID of the ticket
-        showId:
-          type: string
-          format: uuid
-          description: ID of the show the ticket is associated with
-        showTime:
-          type: string
-          description: Showtime of the show the ticket is associated with
-        seatIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of IDs of the seats reserved for the ticket
-        price:
-          type: number
-          format: float
-          description: Price of the ticket
-        status:
-          type: string
-          description: Status of the ticket
-          enum:
-            - pending
-            - purchased
-            - canceled
+    # Ticket:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       format: uuid
+    #       description: Unique ID of the ticket
+    #     reservationId:
+    #       type: string
+    #       format: uuid
+    #       description: ID of the reservation the ticket is associated with
+    #     price:
+    #       type: number
+    #       format: float
+    #       description: Price of the ticket
+    #     status:
+    #       type: string
+    #       description: Status of the ticket
+    #       enum:
+    #         - purchased
+    #         - canceled
 
     TicketRequest:
       type: object
       properties:
-        showId:
-          type: string
-          format: uuid
-          description: ID of the show the ticket is associated with
         seatIds:
           type: array
           items:
             type: string
             format: uuid
           description: List of IDs of the seats reserved for the ticket
-        showTime:
-          type: string
-          description: Showtime of the show the ticket is associated with
         email:
           type: string
           format: email
@@ -146,7 +129,6 @@ components:
               type: string
               description: CVV code of the card
       required:
-        - showId
         - seatIds
         - email
         - paymentDetails
@@ -158,27 +140,20 @@ components:
           type: string
           format: uuid
           description: Unique ID of the ticket
-        showId:
-          type: string
-          format: uuid
-          description: ID of the show the ticket is associated with
-        showTime:
-          type: object
-          properties:
-            room:
-              type: string
-              description: Room where the show will be displayed
-            time:
-              type: string
-              format: time
-              description: Time of the show in HH:mm:ss format
-          description: Showtime of the show the ticket is associated with
-        seatIds:
+        seats:
           type: array
           items:
             type: string
-            format: uuid
-          description: List of IDs of the seats reserved for the ticket
+          description: List of seats that were successfully reserved, shows their room, row and number
+        reservedBy:
+          type: string
+          description: Name of the user who made the reservation
+        showTitle:
+          type: string
+          description: Title of the show for which the seats were reserved
+        showtime:
+          type: string
+          description: Show time for the reservation
         price:
           type: number
           format: float
@@ -187,6 +162,5 @@ components:
           type: string
           description: Status of the ticket
           enum:
-            - pending
-            - purchased
-            - canceled
+            - PURCHASED
+            - CANCELED

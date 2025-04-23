@@ -1,8 +1,8 @@
 package com.hiberus.services.Impl;
 
-import com.hiberus.models.Shows;
 import com.hiberus.models.Showtime;
 import com.hiberus.repository.ShowsServiceRepository;
+import com.hiberus.models.Show;
 import com.hiberus.services.ShowsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,23 +21,23 @@ public class ShowsServiceImpl implements ShowsService {
     }
 
     @Override
-    public List<Shows> getAllShows() {
+    public List<Show> getAllShows() {
         return showsServiceRepository.findAll();
     }
 
     @Override
-    public Shows createShow(Shows show) {
+    public Show createShow(Show show) {
         return showsServiceRepository.save(show);
     }
 
     @Override
-    public Shows getShowById(UUID id) {
+    public Show getShowById(UUID id) {
         return showsServiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Show not found with ID: " + id));
     }
 
     @Override
-    public Shows updateShow(UUID id, Shows show) {
+    public Show updateShow(UUID id, Show show) {
         if (!showsServiceRepository.existsById(id)) {
             throw new RuntimeException("Show not found with ID: " + id);
         }
@@ -55,7 +55,7 @@ public class ShowsServiceImpl implements ShowsService {
 
     @Override
     public List<Showtime> getShowtimesByShowId(UUID showId) {
-        Shows show = showsServiceRepository.findById(showId)
+        Show show = showsServiceRepository.findById(showId)
                 .orElseThrow(() -> new RuntimeException("Show not found with ID: " + showId));
         return show.getShowtimes();
     }

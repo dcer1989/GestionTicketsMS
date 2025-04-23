@@ -2,13 +2,12 @@ package com.hiberus.dto;
 
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShowtimeDto {
+    private Integer id;
     private String room;
-    private String times;
+    private String time;
 }

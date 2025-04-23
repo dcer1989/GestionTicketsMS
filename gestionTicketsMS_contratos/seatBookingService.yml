@@ -18,22 +18,6 @@ paths:
         - Cinema Seats
       summary: Get all seats or search for specific seats
       description: Retrieve a list of all seats in the cinema or search for specific seats by row, and number.
-      parameters:
-        - name: status
-          in: query
-          description: Filter by seat status (e.g., available, reserved, occupied).
-          schema:
-            type: string
-        - name: row
-          in: query
-          description: Filter by row or search for a specific row.
-          schema:
-            type: string
-        - name: number
-          in: query
-          description: Search for a specific seat by number.
-          schema:
-            type: integer
       responses:
         '200':
           description: List of filtered seats or specific seat details
@@ -42,7 +26,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Seat'
+                  $ref: '#/components/schemas/SeatResponse'
         '404':
           description: Seat not found
         '500':
@@ -103,45 +87,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                seatIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-                  description: List of seat IDs to reserve
-                showId:
-                  type: string
-                  format: uuid
-                  description: ID of the show the seats are reserved for
-                showtime:
-                  $ref: './showsService.yml#/components/schemas/Showtime'
-                  description: Showtime details including room and time
-              required:
-                - seatIds
-                - showId
-                - showtime
+                $ref: '#/components/schemas/ReservationRequest'
       responses:
         '200':
           description: Seats reserved successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  reserved:
-                    type: boolean
-                    description: Indicates if the reservation was successful
-                  seatIds:
-                    type: array
-                    items:
-                      type: string
-                    description: List of seat IDs that were successfully reserved
-                  reservationExpiresAt:
-                    type: string
-                    format: date-time
-                    description: Expiration time for the reservation
+                $ref: '#/components/schemas/ReservationResponse'
         '400':
           description: Invalid input
         '404':
@@ -162,37 +115,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                seatIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-                  description: List of seat IDs to validate
-                showId:
-                  type: string
-                  format: uuid
-                  description: ID of the show the seats are associated with
-              required:
-                - seatIds
-                - showId
+                $ref: '#/components/schemas/ValidationRequest'
       responses:
         '200':
           description: Validation result
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  valid:
-                    type: boolean
-                    description: Indicates if all seats are valid
-                  invalidSeats:
-                    type: array
-                    items:
-                      type: string
-                    description: List of seat IDs that are not valid
+                $ref: '#/components/schemas/ValidationResponse'
         '400':
           description: Invalid input
         '404':
@@ -202,38 +132,12 @@ paths:
 
 components:
   schemas:
-    Seat:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique ID of the seat
-        row:
-          type: string
-          description: Row of the seat
-        number:
-          type: integer
-          description: Seat number
-        status:
-          type: string
-          description: Status of the seat
-          enum:
-            - available
-            - reserved
-            - occupied
-        reservationExpiresAt:
-          type: string
-          format: date-time
-          description: Expiration time for the reservation (if reserved)
-        isActive:
-          type: boolean
-          description: Indicates if the seat is active or deactivated
-
     SeatResponse:
       type: object
       properties:
         id:
           type: string
+          format: uuid
           description: Unique ID of the seat
         row:
           type: string
@@ -245,9 +149,100 @@ components:
           type: string
           description: Status of the seat
           enum:
-            - available
-            - reserved
-            - occupied
+            - AVAILABLE
+            - UNAVAILABLE
         isActive:
           type: boolean
           description: Indicates if the seat is active or deactivated
+      required:
+        - id
+        - row
+        - number
+        - status
+        
+    ReservationRequest:
+      type: object
+      properties:
+        seatIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of seat IDs to reserve
+        showId:
+          type: string
+          format: uuid
+          description: ID of the show the seats are reserved for
+        showtimeId:
+          type: integer
+          description: ID of the showtime for the reservation
+        reservedBy:
+          type: string
+          description: Name of the user who made the reservation
+      required:
+        - seatIds
+        - showId
+        - showtimeId
+        - reservedBy
+
+    ReservationResponse:
+      type: object
+      properties:
+        seats:
+          type: array
+          items:
+            type: string
+          description: List of seats that were successfully reserved, shows their room, row and number
+        reservedBy:
+          type: string
+          description: Name of the user who made the reservation
+        showTitle:
+          type: string
+          description: Title of the show for which the seats were reserved
+        showtime:
+          type: string
+          description: Show time for the reservation
+        reservationExpiresAt:
+          type: string
+          format: date-time
+          description: Expiration time for the reservation
+        status:
+          type: string
+          description: Estado de la reserva
+          enum:
+            - ACTIVE
+            - EXPIRED
+            - COMPLETED
+      required:
+        - seats
+        - reservedBy
+        - showTitle
+        - showtime
+        - status
+
+    ValidationRequest:
+      type: object
+      properties:
+        seatIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of seat IDs to validate
+      required:
+        - seatIds
+
+    ValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          description: Indicates if all seats are valid
+        invalidSeats:
+          type: array
+          items:
+            type: string
+          description: List of seat IDs that are not valid
+      required:
+        - valid
+        - invalidSeats

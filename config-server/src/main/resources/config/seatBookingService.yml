@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: seatBookingService
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: seatBookingDB
+      username: root
+      password: root
+      authentication-database: admin
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
