@@ -1,13 +1,13 @@
 package com.hiberus.repository;
 
-import com.hiberus.models.Reservation;
+import com.hiberus.model.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface ReservationRepository extends MongoRepository<Reservation, UUID> {
-    Optional<Reservation> findBySeatIdsContaining(UUID seatId);
+    List<Reservation> findBySeatIdsIn(List<UUID> seatIds);
 }

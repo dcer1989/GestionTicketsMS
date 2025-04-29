@@ -24,7 +24,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Show'
+                  $ref: '#/components/schemas/ShowResponse'
         '401':
           description: Unauthorized. Authentication is required.
         '403':
@@ -46,7 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Show'
+                $ref: '#/components/schemas/ShowResponse'
         '400':
           description: Invalid input
         '401':
@@ -75,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Show'
+                $ref: '#/components/schemas/ShowResponse'
         '401':
           description: Unauthorized. Authentication is required.
         '403':
@@ -106,7 +106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Show'
+                $ref: '#/components/schemas/ShowResponse'
         '400':
           description: Invalid input
         '401':
@@ -159,7 +159,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Showtime'
+                  $ref: '#/components/schemas/ShowtimeResponse'
         '401':
           description: Unauthorized. Authentication is required.
         '403':
@@ -193,7 +193,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Showtime'
+                $ref: '#/components/schemas/ShowtimeResponse'
         '401':
           description: Unauthorized. Authentication is required.
         '403':
@@ -203,7 +203,19 @@ paths:
 
 components:
   schemas:
-    Show:
+    ShowRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the show
+        description:
+          type: string
+          description: Description of the show
+      required:
+        - title
+
+    ShowResponse:
       type: object
       properties:
         id:
@@ -216,35 +228,12 @@ components:
         description:
           type: string
           description: Description of the show
-        showtimes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Showtime'
-          description: List of showtimes, each with a room and time
       required:
+        - id
         - title
-        - price
-        - showtimes
+        - description
 
-    ShowRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Title of the show
-        description:
-          type: string
-          description: Description of the show
-        showtimes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Showtime'
-          description: List of showtimes, each with a room and time
-      required:
-        - title
-        - showtimes
-
-    Showtime:
+    ShowtimeResponse:
       type: object
       properties:
         id:

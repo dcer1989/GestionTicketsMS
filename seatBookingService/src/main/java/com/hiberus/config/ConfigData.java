@@ -1,8 +1,8 @@
 package com.hiberus.config;
 
-import com.hiberus.models.Seat;
-import com.hiberus.models.SeatStatus;
-import com.hiberus.repository.SeatsServiceRepository;
+import com.hiberus.model.Seat;
+import com.hiberus.model.SeatStatus;
+import com.hiberus.repository.SeatsRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ConfigData {
 
     @Bean
-    public CommandLineRunner initDatabase(SeatsServiceRepository seatsRepository) {
+    public CommandLineRunner initDatabase(SeatsRepository seatsRepository) {
         return args -> {
             List<Seat> seats = new ArrayList<>();
             Random random = new Random();

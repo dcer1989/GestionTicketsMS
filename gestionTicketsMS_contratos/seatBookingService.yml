@@ -104,29 +104,29 @@ paths:
         '500':
           description: Internal server error
 
-  /v1/seats/validate:
+  /v1/reservations/update:
     post:
       tags:
-        - Seat Validation
-      summary: Validate the status of seats
-      description: Validate if the provided seats are reserved and their reservation has not expired.
+        - Reservation Update
+      summary: Update the status of Reservation
+      description: Update the status of reservations and return their IDs and statuses.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/ValidationRequest'
+                $ref: '#/components/schemas/UpdateRequest'
       responses:
         '200':
-          description: Validation result
+          description: Updated reservation statuses
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationResponse'
+                $ref: '#/components/schemas/UpdateResponse'
         '400':
           description: Invalid input
         '404':
-          description: One or more seats not found
+          description: One or more reservations not found
         '500':
           description: Internal server error
 
@@ -220,29 +220,32 @@ components:
         - showtime
         - status
 
-    ValidationRequest:
+    UpdateRequest:
       type: object
       properties:
-        seatIds:
+        reservationIds:
           type: array
           items:
             type: string
             format: uuid
-          description: List of seat IDs to validate
+          description: List of reservation IDs to update
       required:
-        - seatIds
+        - reservationIds
 
-    ValidationResponse:
+    UpdateResponse:
       type: object
       properties:
-        valid:
-          type: boolean
-          description: Indicates if all seats are valid
-        invalidSeats:
+        reservationIds:
           type: array
           items:
             type: string
-          description: List of seat IDs that are not valid
+            format: uuid
+          description: List of updated reservation IDs
+        reservationStatuses:
+          type: array
+          items:
+            type: string
+          description: List of updated reservation statuses
       required:
-        - valid
-        - invalidSeats
+        - reservationIds
+        - reservationStatuses
