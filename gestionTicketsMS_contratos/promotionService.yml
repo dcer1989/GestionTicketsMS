@@ -24,92 +24,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Promotion'
-    post:
-      tags:
-        - Promotions Management
-      summary: Create a new promotion
-      description: Add a new promotion to the system.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PromotionRequest'
-      responses:
-        '201':
-          description: Promotion created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Promotion'
-
-  /v1/promotions/{id}:
-    get:
-      tags:
-        - Promotions Management
-      summary: Get a promotion by ID
-      description: Retrieve details of a specific promotion by its ID.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the promotion to retrieve.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Promotion details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Promotion'
-        '404':
-          description: Promotion not found
-    put:
-      tags:
-        - Promotions Management
-      summary: Update a promotion by ID
-      description: Update the details of a specific promotion.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the promotion to update.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PromotionRequest'
-      responses:
-        '200':
-          description: Promotion updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Promotion'
-        '404':
-          description: Promotion not found
-    delete:
-      tags:
-        - Promotions Management
-      summary: Delete a promotion by ID
-      description: Remove a specific promotion from the system.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the promotion to delete.
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Promotion deleted successfully
-        '404':
-          description: Promotion not found
+                  $ref: '#/components/schemas/PromotionResponse'
 
   /v1/promotions/apply:
     post:
@@ -137,11 +52,12 @@ paths:
 
 components:
   schemas:
-    Promotion:
+    PromotionResponse:
       type: object
       properties:
-        id:
+        promotionId:
           type: string
+          format: uuid
           description: Unique ID of the promotion
         name:
           type: string
@@ -162,45 +78,24 @@ components:
           format: date-time
           description: End date of the promotion
 
-    PromotionRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the promotion
-        description:
-          type: string
-          description: Description of the promotion
-        discountPercentage:
-          type: number
-          format: float
-          description: Discount percentage offered by the promotion
-        validFrom:
-          type: string
-          format: date-time
-          description: Start date of the promotion
-        validUntil:
-          type: string
-          format: date-time
-          description: End date of the promotion
-      required:
-        - name
-        - discountPercentage
-        - validFrom
-        - validUntil
-
     ApplyPromotionRequest:
       type: object
       properties:
         ticketId:
           type: string
-          description: ID of the ticket to apply the promotion to
+          format: uuid
+          description: Unique ID of the ticket to which the promotion will be applied
         promotionId:
           type: string
-          description: ID of the promotion to apply
+          format: uuid
+          description: Unique ID of the promotion to apply
+        ticketPrice:
+          type: number
+          format: float
+          description: Price of the ticket
       required:
         - ticketId
-        - promotionId
+        - ticketPrice
 
     ApplyPromotionResponse:
       type: object

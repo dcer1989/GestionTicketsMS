@@ -1,6 +1,6 @@
 package com.hiberus.usecase;
 
-import com.hiberus.exception.SeatNotFoundByIdException;
+import com.hiberus.exception.SeatNotFoundException;
 import com.hiberus.model.Seat;
 import com.hiberus.repository.SeatsRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,6 @@ public class GetSeatByIdUseCase {
         log.info("Getting seat with ID: {}", seatId);
 
         return seatsRepository.findById(seatId)
-                .orElseThrow(() -> new SeatNotFoundByIdException(seatId));
+                .orElseThrow(() -> new SeatNotFoundException(seatId));
     }
 }

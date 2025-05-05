@@ -2,6 +2,7 @@ package com.hiberus.controller;
 
 import com.hiberus.dto.*;
 import com.hiberus.mapper.ReservationRequestMapper;
+import com.hiberus.mapper.ReservationResponseMapper;
 import com.hiberus.mapper.SeatMapper;
 import com.hiberus.model.ReservationStatus;
 import com.hiberus.usecase.*;
@@ -24,28 +25,32 @@ public class SeatsRestController {
     private final DeactivateSeatByIdUseCase deactivateSeatByIdUseCase;
     private final ReserveSeatsUseCase reserveSeatsUseCase;
     private final UpdateReservationStatusUseCase updateReservationStatusUseCase;
+    private final SeatMapper seatMapper;
+    private final ReservationRequestMapper reservationRequestMapper;
+    private final ReservationResponseMapper reservationResponseMapper;
+    private final UpdateResponseMapper updateResponseMapper;
 
     @GetMapping("/v1/seats")
     @ResponseStatus(HttpStatus.OK)
     public List<SeatResponse> getAllSeats() {
-
+    
         log.info("Request received to fetch all seats");
 
         return getAllSeatsUseCase.getAllSeats().stream()
-                .map(SeatMapper::toDto)
+                .map(seatMapper::toDto)
                 .toList();
     }
 
-    @GetMapping("/v1/seats/{id}")
+    @GetMapping("/v1/seats/{seatId}")
     @ResponseStatus(HttpStatus.OK)
     public SeatResponse getSeatById(@PathVariable UUID seatId) {
 
         log.info("Fetching seat with ID: {}", seatId);
 
-        return SeatMapper.toDto(getSeatByIdUseCase.getSeatById(seatId));
+        return seatMapper.toDto(getSeatByIdUseCase.getSeatById(seatId));
     }
 
-    @DeleteMapping("/v1/seats/{id}")
+    @DeleteMapping("/v1/seats/{seatId}")
     @ResponseStatus(HttpStatus.OK)
     public void deactivateSeatById(@PathVariable UUID seatId) {
 
@@ -56,12 +61,12 @@ public class SeatsRestController {
 
     @PostMapping("/v1/seats/reserve")
     @ResponseStatus(HttpStatus.CREATED)
-    public void reserveSeats(
+    public ReservationResponse reserveSeats(
             @RequestBody ReservationRequest reservationRequest) {
 
-        log.info("Request received to reserve seats: {}", reservationRequest.getSeatIds());
+        log.info("Request received to reserve seats: {}", reservationRequest.seatIds());
 
-        reserveSeatsUseCase.reserveSeats(ReservationRequestMapper.toEntity(reservationRequest));
+        return reservationResponseMapper.toDto(reserveSeatsUseCase.reserveSeats(reservationRequestMapper.toEntity(reservationRequest)));
     }
 
     @PostMapping("/v1/reservations/update")
@@ -69,10 +74,8 @@ public class SeatsRestController {
     public UpdateResponse updateReservations(
             @RequestBody UpdateRequest updateRequest) {
 
-        log.info("Request received to update reservations: {}", updateRequest.getReservationIds());
+        log.info("Request received to update reservations: {}", updateRequest.reservationId());
 
-        List<ReservationStatus> updatedReservationStatus = updateReservationStatusUseCase.updateReservationStatus(updateRequest.getReservationIds(), false);
-
-        return UpdateResponseMapper.toDto(updateRequest.getReservationIds(), updatedReservationStatus);
+        return updateResponseMapper.toDto(updateRequest.reservationId(), updateReservationStatusUseCase.updateReservationStatus(updateRequest.reservationId(), false));
     }
 }

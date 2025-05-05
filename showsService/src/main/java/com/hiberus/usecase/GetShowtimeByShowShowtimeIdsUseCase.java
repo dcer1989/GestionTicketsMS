@@ -17,6 +17,7 @@ public class GetShowtimeByShowShowtimeIdsUseCase {
     private final ShowtimeRepository showtimeRepository;
 
     public Showtime getShowtimeByShowShowtimeIds(UUID showId, UUID showtimeId) {
+
         log.info("Fetching showtime with ID: {} for show ID: {}", showtimeId, showId);
 
         return showtimeRepository.findByShowId(showId).stream()

@@ -2,16 +2,13 @@ package com.hiberus.mapper;
 
 import com.hiberus.dto.UpdateResponse;
 import com.hiberus.model.ReservationStatus;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 import java.util.UUID;
 
-public class UpdateResponseMapper {
+@Mapper(componentModel = "spring")
+public interface UpdateResponseMapper {
 
-    public static UpdateResponse toDto(List<UUID> reservationIds, List<ReservationStatus> reservationStatus) {
-        UpdateResponse dto = new UpdateResponse();
-        dto.setReservationIds(reservationIds);
-        dto.setReservationStatus(reservationStatus);
-        return dto;
-    }
+    UpdateResponse toDto(UUID reservationId, ReservationStatus reservationStatus);
 }

@@ -56,19 +56,20 @@ paths:
         '500':
           description: Internal server error
 
-  /v1/shows/{id}:
+  /v1/shows/{showId}:
     get:
       tags:
         - Shows
       summary: Get a show by ID
       description: Retrieve details of a specific show by its ID.
       parameters:
-        - name: id
+        - name: showId
           in: path
           required: true
           description: ID of the show to retrieve.
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Show details retrieved successfully
@@ -88,12 +89,13 @@ paths:
       summary: Update a show by ID
       description: Update the details of a specific show.
       parameters:
-        - name: id
+        - name: showId
           in: path
           required: true
           description: ID of the show to update.
           schema:
             type: string
+            format: uuid
       requestBody:
         required: true
         content:
@@ -121,12 +123,13 @@ paths:
       summary: Delete a show by ID
       description: Remove a specific show from the system.
       parameters:
-        - name: id
+        - name: showId
           in: path
           required: true
           description: ID of the show to delete.
           schema:
             type: string
+            format: uuid
       responses:
         '204':
           description: Show deleted successfully
@@ -151,6 +154,7 @@ paths:
           description: ID of the show to retrieve showtimes for.
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: List of showtimes retrieved successfully
@@ -237,7 +241,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
           description: Unique identifier for the showtime
         room:
           type: string

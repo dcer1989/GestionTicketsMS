@@ -13,16 +13,14 @@ import java.util.UUID;
 public class Ticket {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ticket_id")
     private UUID id;
 
-    @Column(name = "reservation_id", nullable = false)
+    @Column(nullable = false)
     private UUID reservationId;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private double price;
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private TicketStatus status;
 }

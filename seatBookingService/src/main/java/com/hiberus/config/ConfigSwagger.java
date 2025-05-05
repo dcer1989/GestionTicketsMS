@@ -22,7 +22,7 @@ public class ConfigSwagger {
     public GroupedOpenApi seatBookingApi() {
         return GroupedOpenApi.builder()
                 .group("seatBookingService")
-                .pathsToMatch("/v1/seats/**")
+                .pathsToMatch("/v1/seats/**", "/v1/reservations/**")
                 .build();
     }
 }

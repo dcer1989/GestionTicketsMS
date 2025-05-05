@@ -36,7 +36,7 @@ public class ConfigData {
             inactiveSeat.setId(UUID.randomUUID());
             inactiveSeat.setRow(rows[random.nextInt(rows.length)]);
             inactiveSeat.setNumber(20);
-            inactiveSeat.setStatus(SeatStatus.AVAILABLE);
+            inactiveSeat.setStatus(SeatStatus.UNAVAILABLE);
             inactiveSeat.setActive(false);
             seats.add(inactiveSeat);
 

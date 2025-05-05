@@ -1,5 +1,6 @@
 package com.hiberus.usecase;
 
+import com.hiberus.exception.InvalidShowException;
 import com.hiberus.model.Show;
 import com.hiberus.repository.ShowsRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ public class CreateShowUseCase {
     private final ShowsRepository showsRepository;
 
     public void createShow(Show show) {
+        if (show == null || show.getTitle() == null || show.getTitle().isEmpty()) {
+            throw new InvalidShowException();
+        }
 
         log.info("Creating a new show with title: {}", show.getTitle());
 

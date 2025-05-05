@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: '#/components/schemas/PaymentResponse'
         '400':
           description: Invalid input
         '500':
@@ -53,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: '#/components/schemas/PaymentResponse'
         '404':
           description: Payment not found
     delete:
@@ -92,7 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: '#/components/schemas/PaymentResponse'
         '400':
           description: Invalid payment request
         '500':
@@ -100,7 +100,7 @@ paths:
 
 components:
   schemas:
-    Payment:
+    PaymentResponse:
       type: object
       properties:
         id:
@@ -117,8 +117,8 @@ components:
           type: string
           description: Status of the payment
           enum:
-            - completed
-            - failed
+            - COMPLETED
+            - FAILED
         paymentMethod:
           type: string
           description: Payment method used

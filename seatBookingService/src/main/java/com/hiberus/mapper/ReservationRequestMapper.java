@@ -2,15 +2,12 @@ package com.hiberus.mapper;
 
 import com.hiberus.dto.ReservationRequest;
 import com.hiberus.model.Reservation;
+import org.mapstruct.Mapper;
 
-public class ReservationRequestMapper {
+@Mapper(componentModel = "spring")
+public interface ReservationRequestMapper {
 
-    public static Reservation toEntity(ReservationRequest dto) {
-        Reservation reservation = new Reservation();
-        reservation.setSeatIds(dto.getSeatIds());
-        reservation.setShowId(dto.getShowId());
-        reservation.setShowtimeId(dto.getShowtimeId());
-        reservation.setReservedBy(dto.getReservedBy());
-        return reservation;
-    }
+    Reservation toEntity(ReservationRequest dto);
+
+    ReservationRequest toDto(Reservation entity);
 }

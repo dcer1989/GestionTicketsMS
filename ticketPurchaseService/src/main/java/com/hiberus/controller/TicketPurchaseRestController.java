@@ -1,37 +1,39 @@
-package com.hiberus.controller;
+// TicketPurchaseRestController.java
+    package com.hiberus.controller;
 
-import com.hiberus.dto.TicketRequestDto;
-import com.hiberus.dto.TicketResponseDto;
-import com.hiberus.dto.ValidationRequestDto;
-import com.hiberus.dto.ValidationResponseDto;
-import com.hiberus.service.SeatBookingServiceFeign;
-import com.hiberus.service.TicketsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+    import com.hiberus.dto.*;
+    import com.hiberus.mapper.TicketResponseMapper;
+    import com.hiberus.model.Ticket;
+    import com.hiberus.usecase.CreateTicketUseCase;
+    import com.hiberus.usecase.PromotionServiceFeign;
+    import com.hiberus.usecase.SeatBookingServiceFeign;
+    import com.hiberus.usecase.TicketPurchaseUseCase;
+    import lombok.RequiredArgsConstructor;
+    import lombok.extern.slf4j.Slf4j;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.*;
+
+    import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/tickets")
+@RequiredArgsConstructor
+@Slf4j
 public class TicketPurchaseRestController {
 
-    private final SeatBookingServiceFeign seatBookingServiceFeign;
-    private final TicketsService ticketsService;
+    private final TicketPurchaseUseCase ticketPurchaseUseCase;
+    private final TicketResponseMapper ticketResponseMapper;
 
-    @Autowired
-    public TicketPurchaseRestController(SeatBookingServiceFeign seatBookingServiceFeign, TicketsService ticketsService) {
-        this.seatBookingServiceFeign = seatBookingServiceFeign;
-        this.ticketsService = ticketsService;
-    }
+    @PostMapping("/v1/tickets/purchase")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TicketResponse purchase(@RequestBody TicketRequest ticketRequest) {
 
-    @PostMapping("/purchase")
-    public ResponseEntity<TicketResponseDto> purchaseTicket(@RequestBody TicketRequestDto ticketRequestDto) {
-        TicketResponseDto ticketResponse = ticketsService.purchaseTicket(ticketRequestDto);
-        return ResponseEntity.ok(ticketResponse);
-    }
+        log.info("Request received to purchase ticket: {}", ticketRequest);
 
-    @PostMapping("/validate-seats")
-    public ResponseEntity<ValidationResponseDto> validateSeats(@RequestBody ValidationRequestDto validationRequestDto) {
-        ValidationResponseDto validationResponse = seatBookingServiceFeign.validateSeats(validationRequestDto);
-        return ResponseEntity.ok(validationResponse);
+        return ticketResponseMapper.toDto(
+                ticketPurchaseUseCase.purchaseTicket(
+                        ticketRequest.reservationId(),
+                        ticketRequest.promotionId()
+                )
+        );
     }
 }

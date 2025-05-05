@@ -1,5 +1,6 @@
 package com.hiberus.config;
 
+import com.hiberus.exception.InvalidShowException;
 import com.hiberus.exception.ShowNotFoundException;
 import com.hiberus.exception.ShowtimeNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,5 +19,10 @@ public class HttpErrorConfig {
     @ExceptionHandler(ShowNotFoundException.class)
     public  ResponseEntity<String> ShowNotFoundException(ShowNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getReason());
+    }
+
+    @ExceptionHandler(InvalidShowException.class)
+    public ResponseEntity<String> handleInvalidShowException(InvalidShowException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

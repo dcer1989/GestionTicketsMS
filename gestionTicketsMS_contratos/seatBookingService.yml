@@ -9,8 +9,8 @@ tags:
     description: Seat management for cinema rooms
   - name: Seat Reservation
     description: Reserve seats for shows
-  - name: Seat Validation
-    description: Validate the status of seats in the cinema
+  - name: Reservation Update
+    description: Update reservation statuses
 paths:
   /v1/seats:
     get:
@@ -32,19 +32,20 @@ paths:
         '500':
           description: Internal server error
 
-  /v1/seats/{id}:
+  /v1/seats/{seatId}:
     get:
       tags:
         - Cinema Seats
       summary: Get a seat by ID
       description: Retrieve details of a specific seat by its ID.
       parameters:
-        - name: id
+        - name: seatId
           in: path
           required: true
           description: ID of the seat to retrieve.
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Seat details retrieved successfully
@@ -62,12 +63,13 @@ paths:
       summary: Deactivate a seat by ID
       description: Mark a specific seat as inactive instead of deleting it.
       parameters:
-        - name: id
+        - name: seatId
           in: path
           required: true
           description: ID of the seat to deactivate.
           schema:
             type: string
+            format: uuid
       responses:
         '204':
           description: Seat deactivated successfully
@@ -174,7 +176,8 @@ components:
           format: uuid
           description: ID of the show the seats are reserved for
         showtimeId:
-          type: integer
+          type: string
+          format: uuid
           description: ID of the showtime for the reservation
         reservedBy:
           type: string
@@ -188,23 +191,21 @@ components:
     ReservationResponse:
       type: object
       properties:
+        reservationId:
+          type: string
+          format: uuid
+          description: Unique ID of the reservation
         seats:
           type: array
           items:
             type: string
-          description: List of seats that were successfully reserved, shows their room, row and number
+          description: List of seats that were successfully reserved, shows their row and number
         reservedBy:
           type: string
           description: Name of the user who made the reservation
-        showTitle:
-          type: string
-          description: Title of the show for which the seats were reserved
-        showtime:
-          type: string
-          description: Show time for the reservation
         reservationExpiresAt:
           type: string
-          format: date-time
+          format: Instant
           description: Expiration time for the reservation
         status:
           type: string
@@ -223,29 +224,23 @@ components:
     UpdateRequest:
       type: object
       properties:
-        reservationIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of reservation IDs to update
+        reservationId:
+          type: string
+          format: uuid
+          description: Reservation ID to update
       required:
-        - reservationIds
+        - reservationId
 
     UpdateResponse:
       type: object
       properties:
-        reservationIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of updated reservation IDs
+        reservationId:
+          type: string
+          format: uuid
+          description: Updated reservation ID
         reservationStatuses:
-          type: array
-          items:
-            type: string
-          description: List of updated reservation statuses
+          type: string
+          description: Updated reservation status
       required:
-        - reservationIds
-        - reservationStatuses
+        - reservationId
+        - reservationStatus

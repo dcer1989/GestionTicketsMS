@@ -50,31 +50,31 @@ public class ShowsRestController {
         createShowUseCase.createShow(showMapper.toEntity(showRequest));
     }
 
-    @GetMapping("/v1/shows/{id}")
+    @GetMapping("/v1/shows/{showId}")
     @ResponseStatus(HttpStatus.OK)
-    public ShowResponse getShowById(@PathVariable UUID id) {
+    public ShowResponse getShowById(@PathVariable UUID showId) {
 
-        log.info("Fetching show with ID: {}", id);
+        log.info("Fetching show with ID: {}", showId);
 
-        return showMapper.toDto(getShowByIdUseCase.getShowById(id));
+        return showMapper.toDto(getShowByIdUseCase.getShowById(showId));
     }
 
-    @PutMapping("/v1/shows/{id}")
+    @PutMapping("/v1/shows/{showId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateShow(@PathVariable UUID id, @RequestBody ShowRequest showRequest) {
+    public void updateShow(@PathVariable UUID showId, @RequestBody ShowRequest showRequest) {
 
-        log.info("Request received to update show with ID: {}", id);
+        log.info("Request received to update show with ID: {}", showId);
 
-        updateShowUseCase.updateShow(id, showMapper.toEntity(showRequest));
+        updateShowUseCase.updateShow(showId, showMapper.toEntity(showRequest));
     }
 
-    @DeleteMapping("/v1/shows/{id}")
+    @DeleteMapping("/v1/shows/{showId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteShow(@PathVariable UUID id) {
+    public void deleteShow(@PathVariable UUID showId) {
 
-        log.info("Request received to delete show with ID: {}", id);
+        log.info("Request received to delete show with ID: {}", showId);
 
-        deleteShowUseCase.deleteShow(id);
+        deleteShowUseCase.deleteShow(showId);
     }
 
     @GetMapping("/v1/shows/{showId}/showtimes")
@@ -93,6 +93,9 @@ public class ShowsRestController {
     public ShowtimeResponse getShowtimeById(
             @PathVariable UUID showId,
             @PathVariable UUID showtimeId) {
+
+        log.info("Fetching showtime with show ID: {} and showtime ID: {}", showId, showtimeId);
+
         return showtimeMapper.toDto(getShowtimeByShowShowtimeIdsUseCase.getShowtimeByShowShowtimeIds(showId, showtimeId));
     }
 }

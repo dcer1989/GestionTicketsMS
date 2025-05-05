@@ -1,21 +1,13 @@
 package com.hiberus.mapper;
 
-import com.hiberus.model.Seat;
 import com.hiberus.dto.SeatResponse;
+import com.hiberus.model.Seat;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class SeatMapper {
+@Mapper(componentModel = "spring", uses = SeatStatusMapper.class)
+public interface SeatMapper {
 
-    // Convierte de Seat a SeatDto
-    public static SeatResponse toDto(Seat seat) {
-        if (seat == null) {
-            return null;
-        }
-        SeatResponse dto = new SeatResponse();
-        dto.setId(seat.getId());
-        dto.setRow(seat.getRow());
-        dto.setNumber(seat.getNumber());
-        dto.setStatus(seat.getStatus() != null ? SeatStatusMapper.toDto(seat.getStatus()) : null);
-        dto.setActive(seat.isActive());
-        return dto;
-    }
+    @Mapping(source = "status", target = "status", qualifiedByName = "toDto")
+    SeatResponse toDto(Seat seat);
 }

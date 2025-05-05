@@ -1,5 +1,6 @@
 package com.hiberus.usecase;
 
+import com.hiberus.exception.ShowNotFoundException;
 import com.hiberus.model.Show;
 import com.hiberus.repository.ShowsRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,6 @@ public class UpdateShowUseCase {
                     existingShow.setDescription(updatedShow.getDescription());
                     return showsRepository.save(existingShow);
                 })
-                .orElseThrow(() -> new RuntimeException("Show not found with ID: " + id));
+                .orElseThrow(() -> new ShowNotFoundException(id));
     }
 }
