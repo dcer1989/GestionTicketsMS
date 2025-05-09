@@ -1,7 +1,6 @@
 package com.hiberus.dto;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record UpdateRequest(

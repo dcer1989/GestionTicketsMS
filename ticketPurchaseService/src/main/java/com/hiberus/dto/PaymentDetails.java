@@ -1,6 +1,6 @@
 package com.hiberus.dto;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public record PaymentDetails(
     @NotNull String cardNumber, // Número de la tarjeta

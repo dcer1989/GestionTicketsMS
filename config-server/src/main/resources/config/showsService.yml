@@ -19,7 +19,7 @@ spring:
       matching-strategy: ant_path_matcher
 
 server:
-  port: 8080
+  port: 8082
 
 eureka:
   client:

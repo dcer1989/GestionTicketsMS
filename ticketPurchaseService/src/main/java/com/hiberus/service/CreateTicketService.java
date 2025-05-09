@@ -1,6 +1,5 @@
-package com.hiberus.usecase;
+package com.hiberus.service;
 
-import com.hiberus.dto.TicketRequest;
 import com.hiberus.exception.InvalidReservationException;
 import com.hiberus.model.Ticket;
 import com.hiberus.model.TicketStatus;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CreateTicketUseCase {
+public class CreateTicketService {
 
     private final TicketPurchaseRepository ticketPurchaseRepository;
 

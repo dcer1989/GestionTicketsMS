@@ -1,0 +1,2 @@
+¿El config server está corriendo y sirviendo el archivo?
+    curl http://localhost:8888/seatBookingService/default

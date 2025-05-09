@@ -1,4 +1,4 @@
-package com.hiberus.usecase;
+package com.hiberus.service;
 
 import com.hiberus.exception.SeatNotFoundException;
 import com.hiberus.model.Seat;

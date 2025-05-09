@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "TicketCreatedValue",
+  "namespace": "com.hiberus.avro.dtos",
+  "fields": [
+    { "name": "reservationId", "type": "string", "format": "uuid" },
+    { "name": "finalPrice", "type": "double" },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "TicketStatus",
+        "symbols": ["PURCHASED", "PENDING", "CANCELED"]
+      }
+    }
+  ]
+}

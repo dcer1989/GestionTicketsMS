@@ -4,7 +4,6 @@ import com.hiberus.dto.*;
 import com.hiberus.mapper.ReservationRequestMapper;
 import com.hiberus.mapper.ReservationResponseMapper;
 import com.hiberus.mapper.SeatMapper;
-import com.hiberus.model.ReservationStatus;
 import com.hiberus.usecase.*;
 import com.hiberus.mapper.UpdateResponseMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class SeatsRestController {
     private final GetSeatByIdUseCase getSeatByIdUseCase;
     private final DeactivateSeatByIdUseCase deactivateSeatByIdUseCase;
     private final ReserveSeatsUseCase reserveSeatsUseCase;
-    private final UpdateReservationStatusUseCase updateReservationStatusUseCase;
+    private final UpdateReservationCompletedUseCase updateReservationCompletedUseCase;
     private final SeatMapper seatMapper;
     private final ReservationRequestMapper reservationRequestMapper;
     private final ReservationResponseMapper reservationResponseMapper;
@@ -76,6 +75,6 @@ public class SeatsRestController {
 
         log.info("Request received to update reservations: {}", updateRequest.reservationId());
 
-        return updateResponseMapper.toDto(updateRequest.reservationId(), updateReservationStatusUseCase.updateReservationStatus(updateRequest.reservationId(), false));
+        return updateResponseMapper.toDto(updateRequest.reservationId(), updateReservationCompletedUseCase.updateReservationCompleted(updateRequest.reservationId(), false));
     }
 }

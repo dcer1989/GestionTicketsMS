@@ -8,6 +8,8 @@ import com.hiberus.exception.ReservationExpiredException;
 import com.hiberus.model.ReservationStatus;
 import com.hiberus.model.Ticket;
 import com.hiberus.model.TicketStatus;
+import com.hiberus.producer.TicketCreatedProducer;
+import com.hiberus.service.CreateTicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,15 +21,16 @@ import java.util.UUID;
 @Slf4j
 public class TicketPurchaseUseCase {
 
-    private final CreateTicketUseCase createTicketUseCase;
+    private final CreateTicketService createTicketService;
     private final PromotionServiceFeign promotionServiceFeign;
     private final SeatBookingServiceFeign seatBookingServiceFeign;
+    private final TicketCreatedProducer ticketCreatedProducer;
 
     public Ticket purchaseTicket(UUID reservationId, UUID promotionId) {
 
         log.info("Starting ticket purchase process for reservation ID: {}", reservationId);
 
-        Ticket ticket = createTicketUseCase.createTicket(reservationId);
+        Ticket ticket = createTicketService.createTicket(reservationId);
 
         ApplyPromotionRequest promotionRequest = new ApplyPromotionRequest(
                 ticket.getId(),
@@ -48,6 +51,10 @@ public class TicketPurchaseUseCase {
         }
 
         log.info("Reservation status updated successfully: {}", updateResponse);
+
+        ticketCreatedProducer.sendTicketCreatedMessage(ticket);
+
+        log.info("Ticket published successfully: {}", ticket);
 
         return ticket;
     }

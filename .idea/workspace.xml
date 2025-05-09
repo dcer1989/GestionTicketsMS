@@ -4,99 +4,78 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a92e67f2-7745-4ae7-b28b-70f572ecaac7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/promotionService.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/config/ConfigData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/config/HttpErrorConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/controller/PromotionRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/dto/ApplyPromotionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/dto/ApplyPromotionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/dto/PromotionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/exception/PromotionNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/mapper/ApplyPromotionResponseMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/mapper/PromotionResponseMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/Promotion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/TicketPromotion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/repository/PromotionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/repository/TicketPromotionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/usecase/AddTicketPromotionUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/usecase/ApplyPromotionUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/usecase/GetAllPromotionsUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/promotionService/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/ReservationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/ReservationResponseMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/SeatDetailsFormatterService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/exception/InvalidShowException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/client/PromotionServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/HttpErrorConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/ApplyPromotionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/ApplyPromotionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/exception/InvalidReservationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/exception/ReservationExpiredException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/mapper/TicketResponseMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/model/ReservationStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/CreateTicketUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/PromotionServiceFeign.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/SeatBookingServiceFeign.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/TicketPurchaseUseCase.java" afterDir="false" />
+    <list default="true" id="a92e67f2-7745-4ae7-b28b-70f572ecaac7" name="Changes" comment="Agregados microservicios promotionService y ticketPurchaseService. Implementada comunicacion sincrona ticketPurchaseService-promotionService y ticketPurchaseService-seatBookingService">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config-server/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/paymentService.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kafka-infraestructura/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paymentService/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paymentService/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/seatBookingService.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/consumer/TicketConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/listener/TicketCreatedListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/scheduler/ReservationScheduler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/service/UpdateSeatToAvailableService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seatBookingService/src/main/resources/avro/TicketCreatedValue.avsc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/KafkaProducerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/KafkaTopicConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/producer/TicketCreatedProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/resources/avro/TicketCreatedValue.avsc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/test/java/KafkaIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/test/java/KafkaTemplateConfigurationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketPurchaseService/src/test/java/KafkaTestConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/plantUML_secuenceDiagExample.puml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/plantUML_secuenceDiagExample.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/promotionService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/promotionService.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/seatBookingService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/seatBookingService.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/showsService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/showsService.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/ticketPurchaseService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/ticketPurchaseService.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/config/promotionService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/promotionService.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/config/seatBookingService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/seatBookingService.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/config/showsService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/showsService.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/config/ticketPurchaseService.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/config/ticketPurchaseService.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/micros-infraestructura/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eureka-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-server/src/main/java/com/hiberus/ApplicationGatewayServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-server/src/main/java/com/hiberus/ApplicationGatewayServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-server/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/promotionService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/promotionService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/config/ConfigSwagger.java" beforeDir="false" afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/Promotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/TicketPromotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/promotionService/src/main/java/com/hiberus/model/TicketPromotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/promotionService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/promotionService/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/ConfigData.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/ConfigData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/ApplicationSeatBookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/ApplicationSeatBookingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/ConfigSwagger.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/HttpErrorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/config/HttpErrorConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/controller/SeatsRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/controller/SeatsRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/ReservationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/ReservationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/SeatResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/SeatResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/SeatStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/SeatStatusDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/UpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/UpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/UpdateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/dto/UpdateResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/exception/ReservationsNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/exception/ReservationNotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/exception/SeatNotFoundByIdException.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/exception/SeatNotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/exception/SeatsNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/ReservationRequestMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/ReservationRequestMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/SeatMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/SeatMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/SeatStatusMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/SeatStatusMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/UpdateResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/UpdateResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/ReservationResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/mapper/ReservationResponseMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/model/Reservation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/DeactivateSeatByIdUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/DeactivateSeatByIdUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/GetSeatByIdUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/GetSeatByIdUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/model/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/model/Seat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/ReserveSeatsUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/ReserveSeatsUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/UpdateReservationStatusUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/UpdateReservationStatusUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/SeatDetailsFormatterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/service/SeatDetailsFormatterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/UpdateReservationStatusUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/java/com/hiberus/usecase/UpdateReservationCompletedUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seatBookingService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/seatBookingService/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showsService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/ApplicationShowsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/ApplicationShowsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/config/ConfigSwagger.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/config/HttpErrorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/config/HttpErrorConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/controller/ShowsRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/controller/ShowsRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/dto/ShowtimeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/dto/ShowtimeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/dto/ShowRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/dto/ShowRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/model/Show.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/model/Show.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/CreateShowUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/CreateShowUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/GetShowtimeByShowShowtimeIdsUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/GetShowtimeByShowShowtimeIdsUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/UpdateShowUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/usecase/UpdateShowUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/model/Showtime.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/java/com/hiberus/model/Showtime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showsService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketPurchaseService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/client/seatBookingServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/client/SeatBookingServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/ApplicationTicketPurchaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/ApplicationTicketPurchaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/ConfigSwagger.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/config/ConfigSwagger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/controller/TicketPurchaseRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/controller/TicketPurchaseRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/PaymentDetailsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/PaymentDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/ValidationRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/UpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/ValidationResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/UpdateResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/PaymentDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/PaymentDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/TicketRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/UpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/dto/UpdateRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/model/TicketStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/model/TicketStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/repository/TicketPurchaseServiceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/repository/TicketPurchaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/service/Impl/SeatBookingServiceFeignImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/service/Impl/TicketsServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/service/SeatBookingServiceFeign.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/service/TicketsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/CreateTicketUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/service/CreateTicketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/TicketPurchaseUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/java/com/hiberus/usecase/TicketPurchaseUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketPurchaseService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ticketPurchaseService/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +127,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -159,19 +141,26 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindowGit.ShowToolbar": "false",
     "git-widget-placeholder": "feature/rev__1",
     "jdk.selected.JAVA_MODULE": "17",
-    "last_opened_file_path": "C:/Users/DanielCervantesPérez/MicrosAcademy/IntroDocker-MisPrimerosContenedores/04-aplicacion-completa",
+    "last_opened_file_path": "C:/Users/DanielCervantesPérez/MicrosAcademy/Proyecto final/GestionTicketsMS/seatBookingService/src/main/resources/avro",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.31034482",
-    "settings.editor.selected.configurable": "preferences.language.Kotlin.scripting"
+    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\seatBookingService\src\main\resources\avro" />
+      <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\kafka-infraestructura" />
       <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\ticketPurchaseService\src\main\java\com\hiberus\dto" />
       <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\ticketPurchaseService\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\micros-infraestructura" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.hiberus.mapper" />
@@ -182,9 +171,12 @@
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean install" />
+      <command value="mvn dependency:tree | grep kafka-avro-serializer" />
+      <command value="mvn dependency:tree" />
+      <command value="mvn dependency:tree -Dincludes=commons-logging" />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+  <component name="RunManager" selected="Application.ApplicationTicketPurchaseService">
     <configuration name="ApplicationConfigServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationConfigServer" />
       <module name="config-server" />
@@ -224,6 +216,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ApplicationShowsService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationShowsService" />
+      <module name="showsService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hiberus.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ApplicationTicketPurchaseService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationTicketPurchaseService" />
       <module name="ticketPurchaseService" />
@@ -243,21 +248,13 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ApplicationTicketPurchaseService" />
         <item itemvalue="Application.ApplicationPromotionService" />
         <item itemvalue="Application.ApplicationSeatBookingService" />
         <item itemvalue="Application.ApplicationConfigServer" />
-        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Application.ApplicationShowsService" />
       </list>
     </recent_temporary>
   </component>
@@ -270,6 +267,14 @@
       <option name="presentableId" value="Default" />
       <updated>1744728571556</updated>
     </task>
+    <task id="LOCAL-00001" summary="Agregados microservicios promotionService y ticketPurchaseService. Implementada comunicacion sincrona ticketPurchaseService-promotionService y ticketPurchaseService-seatBookingService">
+      <created>1746459306571</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746459306571</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -281,6 +286,17 @@
               <RecentGroup>
                 <option name="FILTER_VALUES">
                   <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="Paths">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="dir:C:/Users/DanielCervantesPérez/MicrosAcademy/Proyecto final/GestionTicketsMS/ticketPurchaseService" />
                 </option>
               </RecentGroup>
             </list>
@@ -309,11 +325,26 @@
                   <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="feature/rev_1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
             </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Agregados microservicios promotionService y ticketPurchaseService. Implementada comunicacion sincrona ticketPurchaseService-promotionService y ticketPurchaseService-seatBookingService" />
+    <option name="LAST_COMMIT_MESSAGE" value="Agregados microservicios promotionService y ticketPurchaseService. Implementada comunicacion sincrona ticketPurchaseService-promotionService y ticketPurchaseService-seatBookingService" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

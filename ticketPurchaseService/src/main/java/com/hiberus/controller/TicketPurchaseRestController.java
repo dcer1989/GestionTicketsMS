@@ -3,17 +3,11 @@
 
     import com.hiberus.dto.*;
     import com.hiberus.mapper.TicketResponseMapper;
-    import com.hiberus.model.Ticket;
-    import com.hiberus.usecase.CreateTicketUseCase;
-    import com.hiberus.usecase.PromotionServiceFeign;
-    import com.hiberus.usecase.SeatBookingServiceFeign;
     import com.hiberus.usecase.TicketPurchaseUseCase;
     import lombok.RequiredArgsConstructor;
     import lombok.extern.slf4j.Slf4j;
     import org.springframework.http.HttpStatus;
     import org.springframework.web.bind.annotation.*;
-
-    import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor

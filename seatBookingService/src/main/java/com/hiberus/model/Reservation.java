@@ -22,4 +22,12 @@ public class Reservation {
     private String reservedBy; // Usuario que realizó la reserva
     private Instant reservationExpiresAt; // Fecha y hora de expiración de la reserva
     private ReservationStatus status = ReservationStatus.ACTIVE; // Estado de la reserva
+
+    public boolean isExpired() {
+        return Instant.now().isAfter(reservationExpiresAt);
+    }
+
+    public boolean isCompleted() {
+        return status == ReservationStatus.COMPLETED;
+    }
 }

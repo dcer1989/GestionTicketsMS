@@ -18,4 +18,8 @@ public class Seat {
     private int number;
     private SeatStatus status;
     private boolean isActive;
+
+    public boolean isAvailable() {
+        return status == SeatStatus.AVAILABLE;
+    }
 }

@@ -5,7 +5,7 @@ import com.hiberus.model.Reservation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.hiberus.usecase.SeatDetailsFormatterService;
+import com.hiberus.service.SeatDetailsFormatterService;
 
 @Mapper(componentModel = "spring", uses = {SeatDetailsFormatterService.class})
 public interface ReservationResponseMapper {

@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
         <module name="config-server" />
+        <module name="paymentService" />
         <module name="seatBookingService" />
         <module name="gateway-server" />
         <module name="promotionService" />
@@ -27,6 +28,10 @@
         <module name="showsService" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="seatBookingService (1)" target="17" />
+      <module name="seatBookingService (2)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -34,8 +39,11 @@
       <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="gateway-server" options="-parameters" />
+      <module name="paymentService" options="-parameters" />
       <module name="promotionService" options="-parameters" />
       <module name="seatBookingService" options="-parameters" />
+      <module name="seatBookingService (1)" options="-parameters" />
+      <module name="seatBookingService (2)" options="-parameters" />
       <module name="showsService" options="-parameters" />
       <module name="ticketPurchaseService" options="-parameters" />
     </option>

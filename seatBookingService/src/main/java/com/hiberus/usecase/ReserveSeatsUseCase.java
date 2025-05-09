@@ -32,28 +32,27 @@ public class ReserveSeatsUseCase {
                 seatsRepository.findAllById(reservation.getSeatIds()).spliterator(), false
         ).toList();
 
-        // Verificar si algún asiento no fue encontrado
         if (seats.size() != reservation.getSeatIds().size()) {
             throw new SeatNotFoundException();
         }
 
-        for (Seat seat : seats) {
-
-            if (!seat.isActive()) {
-                throw new InactiveSeatException(seat.getId());
-            }
-            if (SeatStatus.UNAVAILABLE.equals(seat.getStatus())) {
-                throw new SeatAlreadyReservedException(seat.getId());
-            }
-            seat.setStatus(SeatStatus.UNAVAILABLE);
-        }
+        seats.stream()
+            .peek(seat -> {
+                if (!seat.isActive()) {
+                    throw new InactiveSeatException(seat.getId());
+                }
+                if (!seat.isAvailable()) {
+                    throw new SeatAlreadyReservedException(seat.getId());
+                }
+            })
+            .forEach(seat -> seat.setStatus(SeatStatus.UNAVAILABLE));
 
         log.info("Saving the updated state of the seats in the database");
 
         seatsRepository.saveAll(seats);
 
         reservation.setId(UUID.randomUUID());
-        reservation.setReservationExpiresAt(Instant.now().plusSeconds(900));
+        reservation.setReservationExpiresAt(Instant.now().plusSeconds(900)); // 900 para 15 minutos
         reservation.setStatus(ReservationStatus.ACTIVE);
 
         log.info("Saving the reservation with ID: {}", reservation.getId());
