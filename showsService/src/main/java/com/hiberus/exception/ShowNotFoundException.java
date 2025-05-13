@@ -9,4 +9,8 @@ public class ShowNotFoundException extends ResponseStatusException {
     public ShowNotFoundException(UUID showId) {
         super(HttpStatus.NOT_FOUND, "Show with ID " + showId + " not found");
     }
+
+    public ShowNotFoundException() {
+        super(HttpStatus.NOT_FOUND, "One or more shows were not found");
+    }
 }

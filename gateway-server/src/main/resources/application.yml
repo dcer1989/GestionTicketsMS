@@ -21,14 +21,27 @@ spring:
           uri: lb://seatBookingService
           predicates:
             - Path=
-                /v1/seats/**,
-                /v1/reservations/**
+              /v1/seats/**,
+              /v1/reservations/**
 
         - id: promotion-service
           uri: lb://promotionService
           predicates:
             - Path=/v1/promotions/**
 
-      discovery:
-        locator:
-          enabled: true # Habilita la localización de servicios registrados en Eureka
+    inetutils:
+      preferred-networks:
+        - 10.207.* # o tu rango de IP local
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

@@ -1,11 +1,11 @@
 package com.hiberus.controller;
 
 import com.hiberus.dto.*;
+import com.hiberus.mapper.ReservationByIdMapper;
 import com.hiberus.mapper.ReservationRequestMapper;
 import com.hiberus.mapper.ReservationResponseMapper;
 import com.hiberus.mapper.SeatMapper;
 import com.hiberus.usecase.*;
-import com.hiberus.mapper.UpdateResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,11 +23,11 @@ public class SeatsRestController {
     private final GetSeatByIdUseCase getSeatByIdUseCase;
     private final DeactivateSeatByIdUseCase deactivateSeatByIdUseCase;
     private final ReserveSeatsUseCase reserveSeatsUseCase;
-    private final UpdateReservationCompletedUseCase updateReservationCompletedUseCase;
+    private final GetReservationByIdUseCase getReservationByIdUseCase;
     private final SeatMapper seatMapper;
     private final ReservationRequestMapper reservationRequestMapper;
     private final ReservationResponseMapper reservationResponseMapper;
-    private final UpdateResponseMapper updateResponseMapper;
+    private final ReservationByIdMapper reservationByIdMapper;
 
     @GetMapping("/v1/seats")
     @ResponseStatus(HttpStatus.OK)
@@ -68,13 +68,12 @@ public class SeatsRestController {
         return reservationResponseMapper.toDto(reserveSeatsUseCase.reserveSeats(reservationRequestMapper.toEntity(reservationRequest)));
     }
 
-    @PostMapping("/v1/reservations/update")
+    @GetMapping("/v1/reservations/{reservationId}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdateResponse updateReservations(
-            @RequestBody UpdateRequest updateRequest) {
+    public ReseervationByIdResponse getReservationById(@PathVariable UUID reservationId) {
 
-        log.info("Request received to update reservations: {}", updateRequest.reservationId());
+        log.info("Fetching reservation with ID: {}", reservationId);
 
-        return updateResponseMapper.toDto(updateRequest.reservationId(), updateReservationCompletedUseCase.updateReservationCompleted(updateRequest.reservationId(), false));
+        return reservationByIdMapper.toDto(reservationId, getReservationByIdUseCase.getReservationById(reservationId).getStatus());
     }
 }

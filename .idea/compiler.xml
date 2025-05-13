@@ -21,8 +21,8 @@
         <module name="config-server" />
         <module name="paymentService" />
         <module name="seatBookingService" />
-        <module name="gateway-server" />
         <module name="promotionService" />
+        <module name="gateway-server" />
         <module name="ticketPurchaseService" />
         <module name="eureka-server" />
         <module name="showsService" />

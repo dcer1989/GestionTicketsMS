@@ -7,3 +7,6 @@ spring:
     cloud:
         config:
             uri: http://localhost:8888
+        inetutils:
+            preferred-networks:
+                - 10.207.*  # O puedes usar: - 10.207.6.*

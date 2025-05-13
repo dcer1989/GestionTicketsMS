@@ -3,6 +3,6 @@ package com.hiberus.dto;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
-public record UpdateRequest(
+public record ReservationByIdRequest(
     @NotNull UUID reservationId
 ) {}

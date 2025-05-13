@@ -4,7 +4,7 @@ import com.hiberus.model.ReservationStatus;
 
 import java.util.UUID;
 
-public record UpdateResponse(
+public record ReseervationByIdResponse(
     UUID reservationId,
     ReservationStatus reservationStatus
 ) {}

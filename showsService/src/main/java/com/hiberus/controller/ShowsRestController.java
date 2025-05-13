@@ -3,13 +3,10 @@ package com.hiberus.controller;
 import com.hiberus.dto.ShowRequest;
 import com.hiberus.dto.ShowResponse;
 import com.hiberus.dto.ShowtimeResponse;
-import com.hiberus.model.Show;
-import com.hiberus.model.Showtime;
 import com.hiberus.usecase.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -151,6 +151,31 @@
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>io.confluent</groupId>-->
+<!--                <artifactId>kafka-schema-registry-maven-plugin</artifactId>-->
+<!--                <version>7.5.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>register-avro-schemas</id>-->
+<!--                        <phase>generate-resources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>register</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <schemaRegistryUrls>-->
+<!--                                <param>http://localhost:8081</param>-->
+<!--                            </schemaRegistryUrls>-->
+<!--                            <subjects>-->
+<!--                                <subject>-->
+<!--                                    <name>ticket-created-topic-value</name>-->
+<!--                                    <schemaFile>src/main/resources/avro/TicketCreatedValue.avsc</schemaFile>-->
+<!--                                </subject>-->
+<!--                            </subjects>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

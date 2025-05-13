@@ -27,7 +27,7 @@ public class Reservation {
         return Instant.now().isAfter(reservationExpiresAt);
     }
 
-    public boolean isCompleted() {
-        return status == ReservationStatus.COMPLETED;
+    public boolean isActive() {
+        return status == ReservationStatus.ACTIVE;
     }
 }

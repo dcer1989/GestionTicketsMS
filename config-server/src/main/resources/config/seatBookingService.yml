@@ -16,7 +16,7 @@ spring:
     properties:
       schema.registry.url: http://localhost:8081
     consumer:
-      group-id: paymentConsumerGroup
+      group-id: seatBookingConsumerGroup
 
   mvc:
     pathmatch:
@@ -27,13 +27,17 @@ server:
 
 message:
   topic:
-    name: ticket-created-topic
+    ticket-created: ticket-created-topic
+    ticket-payed: ticket-payed-topic
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      default-zone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka
   instance:
+    prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    metadata-map:
+      zone: default

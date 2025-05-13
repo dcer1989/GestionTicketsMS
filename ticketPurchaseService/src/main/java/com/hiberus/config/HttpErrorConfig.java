@@ -1,6 +1,7 @@
 package com.hiberus.config;
 
 import com.hiberus.exception.InvalidReservationException;
+import com.hiberus.exception.KafkaSendException;
 import com.hiberus.exception.ReservationExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,10 @@ public class HttpErrorConfig {
     @ExceptionHandler(InvalidReservationException.class)
     public ResponseEntity<String> handleInvalidReservationException(InvalidReservationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getReason());
+    }
+
+    @ExceptionHandler(KafkaSendException.class)
+    public ResponseEntity<String> handleKafkaSendException(KafkaSendException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 }

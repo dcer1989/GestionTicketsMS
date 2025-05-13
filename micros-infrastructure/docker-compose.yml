@@ -54,6 +54,10 @@ services:
     volumes:
       - promotionService_postgres_data:/var/lib/postgresql/data
 
+networks:
+    default:
+        driver: bridge
+
 volumes:
   showsService_postgres_data:
   seatBookingService_mongo_data:

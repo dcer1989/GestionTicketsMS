@@ -117,16 +117,16 @@ components:
           type: string
           description: Status of the payment
           enum:
-            - COMPLETED
+            - PAYED
             - FAILED
         paymentMethod:
           type: string
           description: Payment method used
           enum:
-            - credit_card
-            - debit_card
-            - paypal
-            - cash
+            - CREDIT_CARD
+            - DEBIT_CARD
+            - PAYPAL
+            - CASH
 
     PaymentRequest:
       type: object
@@ -142,10 +142,10 @@ components:
           type: string
           description: Payment method to be used
           enum:
-            - credit_card
-            - debit_card
-            - paypal
-            - cash
+            - CREDIT_CARD
+            - DEBIT_CARD
+            - PAYPAL
+            - CASH
       required:
         - ticketId
         - amount

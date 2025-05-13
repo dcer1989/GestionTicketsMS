@@ -19,13 +19,12 @@ public class ConfigData {
     public CommandLineRunner initDatabase(SeatsRepository seatsRepository) {
         return args -> {
             List<Seat> seats = new ArrayList<>();
-            Random random = new Random();
             String[] rows = {"A", "B", "C", "D"};
 
             for (int i = 1; i <= 19; i++) {
                 Seat seat = new Seat();
-                seat.setId(UUID.randomUUID());
-                seat.setRow(rows[random.nextInt(rows.length)]);
+                seat.setId(UUID.fromString(String.format("00000000-0000-0000-0000-%012d", i))); // UUID fijo
+                seat.setRow(rows[(i - 1) % rows.length]);
                 seat.setNumber(i);
                 seat.setStatus(SeatStatus.AVAILABLE);
                 seat.setActive(true);
@@ -33,8 +32,8 @@ public class ConfigData {
             }
 
             Seat inactiveSeat = new Seat();
-            inactiveSeat.setId(UUID.randomUUID());
-            inactiveSeat.setRow(rows[random.nextInt(rows.length)]);
+            inactiveSeat.setId(UUID.fromString("00000000-0000-0000-0000-000000000020")); // UUID fijo
+            inactiveSeat.setRow(rows[19 % rows.length]);
             inactiveSeat.setNumber(20);
             inactiveSeat.setStatus(SeatStatus.UNAVAILABLE);
             inactiveSeat.setActive(false);

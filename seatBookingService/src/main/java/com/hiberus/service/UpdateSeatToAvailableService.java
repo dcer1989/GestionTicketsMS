@@ -23,7 +23,7 @@ public class UpdateSeatToAvailableService {
 
         log.info("Updating the status of the seats to AVAILABLE for the IDs: {}", seatIds);
 
-        List<Seat> seats = StreamSupport.stream(seatsRepository.findAllById(seatIds).spliterator(), false)
+        List<Seat> seats = seatsRepository.findAllById(seatIds).stream()
                 .toList();
 
         if (seats.isEmpty()) {

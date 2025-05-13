@@ -1,0 +1,25 @@
+{
+  "type": "record",
+  "name": "TicketPayedValue",
+  "namespace": "com.hiberus.avro.dtos",
+  "fields": [
+    { "name": "ticketId", "type": "string", "format": "uuid" },
+    { "name": "finalPrice", "type": "double" },
+    { "name": "paymentMethod", "type": "string" },
+    {
+      "name": "paymentTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "PaymentStatus",
+        "symbols": ["PAYED", "FAILED"]
+      }
+    }
+  ]
+}

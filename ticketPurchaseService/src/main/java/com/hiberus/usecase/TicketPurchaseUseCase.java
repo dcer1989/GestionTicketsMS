@@ -2,8 +2,7 @@ package com.hiberus.usecase;
 
 import com.hiberus.dto.ApplyPromotionRequest;
 import com.hiberus.dto.ApplyPromotionResponse;
-import com.hiberus.dto.UpdateRequest;
-import com.hiberus.dto.UpdateResponse;
+import com.hiberus.dto.ReservationByIdResponse;
 import com.hiberus.exception.ReservationExpiredException;
 import com.hiberus.model.ReservationStatus;
 import com.hiberus.model.Ticket;
@@ -32,6 +31,8 @@ public class TicketPurchaseUseCase {
 
         Ticket ticket = createTicketService.createTicket(reservationId);
 
+        log.info("Making a request to the promotions microservice with Promotion ID: {}", promotionId);
+
         ApplyPromotionRequest promotionRequest = new ApplyPromotionRequest(
                 ticket.getId(),
                 promotionId,
@@ -40,21 +41,18 @@ public class TicketPurchaseUseCase {
         ApplyPromotionResponse appliedPromotion = promotionServiceFeign.applyPromotion(promotionRequest);
         ticket.setPrice(appliedPromotion.finalPrice());
 
-        log.info("Promotion applied successfully: {}", appliedPromotion);
+        log.info("Making a request to the seat booking microservice to check status of reservation with ID: {}", reservationId);
 
-        UpdateRequest updateRequest = new UpdateRequest(reservationId);
-        UpdateResponse updateResponse = seatBookingServiceFeign.updateReservationStatus(updateRequest);
+        ReservationByIdResponse reservationByIdResponse = seatBookingServiceFeign.getReservationById(reservationId);
 
-        if (updateResponse.reservationStatus() == ReservationStatus.EXPIRED) {
+        if (reservationByIdResponse.reservationStatus() == ReservationStatus.EXPIRED) {
             ticket.setStatus(TicketStatus.CANCELED);
             throw new ReservationExpiredException(reservationId);
         }
 
-        log.info("Reservation status updated successfully: {}", updateResponse);
+        log.info("Publishing ticket created event for Ticket with ID: {}", ticket.getId());
 
         ticketCreatedProducer.sendTicketCreatedMessage(ticket);
-
-        log.info("Ticket published successfully: {}", ticket);
 
         return ticket;
     }
