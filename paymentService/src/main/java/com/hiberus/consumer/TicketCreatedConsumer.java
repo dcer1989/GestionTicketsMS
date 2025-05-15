@@ -36,8 +36,6 @@ public class TicketCreatedConsumer {
     ) {
         log.info("Received event with ID (ticketId): " + ticketId + " and value(ticketCreatedValue): " + ticketCreatedValue);
 
-        log.info("Creating payment for ticket with ID: " + ticketId);
-
         Payment payment = createPaymentService.createPayment(UUID.fromString(ticketId), ticketCreatedValue.getFinalPrice());
 
         log.info("Sending payment event for ticket with ID: " + ticketId);

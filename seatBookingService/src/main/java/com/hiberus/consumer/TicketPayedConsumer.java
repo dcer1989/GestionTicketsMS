@@ -21,7 +21,7 @@ public class TicketPayedConsumer {
         )
     public void receiveTicketPayed(TicketPayedValue ticketPayedValue) {
 
-        log.info("Received TicketPayed event for ticketId with value: " + ticketPayedValue);
+        log.info("Received TicketPayed with value=: " + ticketPayedValue);
 
         correlator.onTicketPayed(ticketPayedValue);
     }

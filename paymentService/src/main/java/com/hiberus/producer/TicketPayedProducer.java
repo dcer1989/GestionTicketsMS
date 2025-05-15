@@ -37,11 +37,11 @@ public class TicketPayedProducer {
                 .whenComplete((result, ex) -> {
                     if (ex == null) {
 
-                        log.info("Sent TicketPayedValue for key=" + key);
+                        log.info("Event sent with key=" + key + " and value=" + value + " to topic=" + topicName);
 
                     } else {
 
-                        throw new KafkaSendException("Failed to send TicketPayedValue for key=" + key, ex);
+                        throw new KafkaSendException("Failed to send event with key=" + key + " and value=" + value + " to topic=" + topicName, ex);
                     }
                 });
     }

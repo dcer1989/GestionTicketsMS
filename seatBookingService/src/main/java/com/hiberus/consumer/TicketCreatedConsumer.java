@@ -25,7 +25,7 @@ public class TicketCreatedConsumer {
     public void receiveTicketCreated(@Header(KafkaHeaders.RECEIVED_KEY) String ticketId,
                                      TicketCreatedValue ticketCreatedValue) {
 
-        log.info("Received TicketCreated event for ticketId with ID: " + ticketId + " and value: " + ticketCreatedValue);
+        log.info("Received event with key=: " + ticketId + " and value: " + ticketCreatedValue);
 
         correlator.onTicketCreated(ticketId, ticketCreatedValue);
     }

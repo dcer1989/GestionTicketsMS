@@ -30,17 +30,14 @@ public class TicketCreatedProducer {
                 .setStatus(TicketStatus.valueOf(ticket.getStatus().name()))
                 .build();
 
-        log.info("Sending TicketCreatedValue: " + value);
-
         kafkaTemplate.send(topicName, key, value)
                 .whenComplete((result, ex) -> {
                     if (ex == null) {
 
-                        log.info("Sent TicketPayedValue for key=" + key);
+                        log.info("Event sent with key=" + key + " and value=" + value + " to topic=" + topicName);
 
                     } else {
-                        log.error("Failed to send TicketPayedValue for key=" + key, ex);
-                        throw new KafkaSendException("Failed to send TicketPayedValue for key=" + key, ex);
+                        throw new KafkaSendException("Failed to send event with key=" + key + " and value=" + value + "to topic=" + topicName, ex);
                     }
                 });
     }
