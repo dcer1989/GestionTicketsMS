@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a92e67f2-7745-4ae7-b28b-70f572ecaac7" name="Changes" comment="Todos los micros implementados y en su version final pendiente dockerizacion de las aplicaciones. Se agregaron las clases principales de PromotionService y PaymentService (no estaban en commit anterior) y se modificaron los logs de las clases con eventos">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="a92e67f2-7745-4ae7-b28b-70f572ecaac7" name="Changes" comment="Añadida infraestructura para paymentService">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gestionTicketsMS_contratos/plantUML_secuenceDiagExample.puml" beforeDir="false" afterPath="$PROJECT_DIR$/gestionTicketsMS_contratos/plantUML_secuenceDiagExample.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka-infrastructure/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-infrastructure/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/micros-infrastructure/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/micros-infrastructure/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/paymentService/src/main/java/com/hiberus/producer/TicketPayedProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/paymentService/src/main/java/com/hiberus/producer/TicketPayedProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/showsService/src/test/java/ShowsRestControllerIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/showsService/src/test/java/ShowsRestControllerIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-server/src/main/java/com/hiberus/ApplicationGatewayServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-server/src/main/java/com/hiberus/ApplicationGatewayServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,24 +74,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.kafka-infrastructure: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.micros-infrastructure: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ToolWindowGit.ShowToolbar&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/rev__1&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/DanielCervantesPérez/MicrosAcademy/kafka&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.31034482&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ApplicationConfigServer.executor": "Run",
+    "Application.ApplicationEurekaServer.executor": "Run",
+    "Application.ApplicationGatewayServer.executor": "Run",
+    "Application.ApplicationPaymentService.executor": "Run",
+    "Application.ApplicationPromotionService.executor": "Run",
+    "Application.ApplicationSeatBookingService.executor": "Run",
+    "Application.ApplicationShowsService.executor": "Run",
+    "Application.ApplicationTicketPurchaseService.executor": "Run",
+    "Docker.kafka-infrastructure: Compose Deployment.executor": "Run",
+    "Docker.micros-infrastructure: Compose Deployment.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindowGit.ShowToolbar": "false",
+    "git-widget-placeholder": "feature/rev__1",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "C:/Users/DanielCervantesPérez/MicrosAcademy/kafka",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.31034482",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\DanielCervantesPérez\MicrosAcademy\Proyecto final\GestionTicketsMS\seatBookingService\src\main\resources\avro" />
@@ -132,7 +133,7 @@
       <command value="mvn clean install -X | Out-File -FilePath build-debug.log -Encoding utf8 " />
     </option>
   </component>
-  <component name="RunManager" selected="Docker.micros-infrastructure: Compose Deployment">
+  <component name="RunManager" selected="Application.ApplicationPaymentService">
     <configuration name="ApplicationPaymentService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationPaymentService" />
       <module name="paymentService" />
@@ -149,6 +150,32 @@
     <configuration name="ApplicationPromotionService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationPromotionService" />
       <module name="promotionService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hiberus.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationSeatBookingService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationSeatBookingService" />
+      <module name="seatBookingService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hiberus.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationShowsService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hiberus.ApplicationShowsService" />
+      <module name="showsService" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.hiberus.*" />
@@ -178,29 +205,13 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="kafka-infrastructure: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="sourceFilePath" value="kafka-infrastructure/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="micros-infrastructure: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="sourceFilePath" value="micros-infrastructure/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.micros-infrastructure: Compose Deployment" />
-        <item itemvalue="Docker.kafka-infrastructure: Compose Deployment" />
-        <item itemvalue="Application.ApplicationTicketPurchaseService" />
-        <item itemvalue="Application.ApplicationPromotionService" />
         <item itemvalue="Application.ApplicationPaymentService" />
+        <item itemvalue="Application.ApplicationPromotionService" />
+        <item itemvalue="Application.ApplicationTicketPurchaseService" />
+        <item itemvalue="Application.ApplicationSeatBookingService" />
+        <item itemvalue="Application.ApplicationShowsService" />
       </list>
     </recent_temporary>
   </component>
@@ -234,7 +245,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747307298190</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Añadida infraestructura para paymentService">
+      <option name="closed" value="true" />
+      <created>1747924257273</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747924257273</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -306,7 +325,8 @@
     <MESSAGE value="Agregados microservicios promotionService y ticketPurchaseService. Implementada comunicacion sincrona ticketPurchaseService-promotionService y ticketPurchaseService-seatBookingService" />
     <MESSAGE value="Productor de eventos en ticketPurchaseService esta funcional. Consumidor de eventos en seatBookingService esta funcional pero en modo dummy (sin logica de negocio). Añadido modulo paymentService para microservicio de gestion de pagos pero sin funcionalidades en paquetes aun" />
     <MESSAGE value="Todos los micros implementados y en su version final pendiente dockerizacion de las aplicaciones. Se agregaron las clases principales de PromotionService y PaymentService (no estaban en commit anterior) y se modificaron los logs de las clases con eventos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Todos los micros implementados y en su version final pendiente dockerizacion de las aplicaciones. Se agregaron las clases principales de PromotionService y PaymentService (no estaban en commit anterior) y se modificaron los logs de las clases con eventos" />
+    <MESSAGE value="Añadida infraestructura para paymentService" />
+    <option name="LAST_COMMIT_MESSAGE" value="Añadida infraestructura para paymentService" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
