@@ -1,7 +1,6 @@
 import com.hiberus.ApplicationShowsService;
 import com.hiberus.exception.InvalidShowException;
 import com.hiberus.exception.ShowNotFoundException;
-import com.hiberus.exception.ShowtimeNotFoundException;
 import com.hiberus.usecase.GetAllShowsUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

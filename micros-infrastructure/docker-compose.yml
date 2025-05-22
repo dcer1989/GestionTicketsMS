@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   showsService_postgres:
     image: postgres:14
@@ -54,6 +53,18 @@ services:
     volumes:
       - promotionService_postgres_data:/var/lib/postgresql/data
 
+  paymentService_mongo:
+    image: mongo:6
+    container_name: paymentService-mongo-container
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27018:27017"
+    volumes:
+      - paymentService_mongo_data:/data/db
+
 networks:
     default:
         driver: bridge
@@ -63,3 +74,4 @@ volumes:
   seatBookingService_mongo_data:
   ticketPurchaseService_postgres_data:
   promotionService_postgres_data:
+  paymentService_mongo_data:

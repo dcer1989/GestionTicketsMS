@@ -2,13 +2,12 @@ package com.hiberus.producer;
 
 import com.hiberus.avro.dtos.PaymentStatus;
 import com.hiberus.avro.dtos.TicketPayedValue;
-import com.hiberus.exception.KafkaSendException; // Importar la nueva excepción personalizada
+import com.hiberus.exception.KafkaSendException;
 import com.hiberus.model.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 @Service

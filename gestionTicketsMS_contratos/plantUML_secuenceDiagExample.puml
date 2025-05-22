@@ -1,60 +1,53 @@
 
 @startuml SequenceDiagram
 
-actor Client
 participant "Frontend" as FE
 participant "Shows Service" as ShowsService
 participant "Seat Booking Service" as SeatBookingService
 participant "Ticket Purchase Service" as TicketPurchaseService
 participant "Payment Service" as PaymentService
-participant "Notification Service" as NotificationService
 participant "Promotion Service" as PromotionService
 participant "Message Queue" as MQ
 
+' El Scheduler ejecuta esta tarea automáticamente cada minuto
+note right of SeatBookingService
+  Scheduled task executed every minute
+end note
+SeatBookingService -> SeatBookingService: Update reservations to EXPIRED\nUpdate seat status to AVAILABLE
+
 ' Flujo: Cliente visualiza horarios de programas
-Client -> FE: Request Showtimes
-FE -> ShowsService: Get Showtimes
-ShowsService --> FE: Return Showtimes
+FE -> ShowsService: Get shows
+ShowsService --> FE: Return shows
+FE -> ShowsService: Get showtimes for specific show
+ShowsService --> FE: Return showtimes
 
 ' Flujo: Cliente selecciona asiento
-Client -> FE: Reserve Seat and Purchase Ticket for reserved seats
-FE -> SeatBookingService: Get Seats
-SeatBookingService --> FE: Return Seats
+FE -> SeatBookingService: Get seats
+SeatBookingService --> FE: Return seats
 
 ' Flujo: Cliente selecciona compra ticket
 FE -> SeatBookingService: Reserve seats
-SeatBookingService --> FE : Seats Reserved
-FE -> TicketPurchaseService: Purchase Ticket (has Promotion?)
-TicketPurchaseService -> PromotionService: Validate Promotion (Synchronous)
-PromotionService --> TicketPurchaseService: Promotion Validated
-TicketPurchaseService -> TicketPurchaseService: Create Ticket(s) Purchase with Promotion applied
-TicketPurchaseService -> SeatBookingService: Validate Seats (seatIds, showId, showtime) 
-SeatBookingService -> SeatBookingService: Check seat status and expiration
+SeatBookingService -> SeatBookingService: Create reservation\nSet seat status UNAVAILABLE
+SeatBookingService --> FE : Seats reserved
+FE -> TicketPurchaseService: Purchase ticket
+TicketPurchaseService -> PromotionService: Apply promotion
+PromotionService -> PromotionService: Process promotion
+PromotionService --> TicketPurchaseService: Promotion applied
+TicketPurchaseService -> SeatBookingService: Get seat status 
+SeatBookingService --> TicketPurchaseService: Seat status (AVAILABLE/UNAVAILABLE)
+TicketPurchaseService -> TicketPurchaseService: Create ticket if seat AVAILABLE
 
-alt All seats valid
-    SeatBookingService --> TicketPurchaseService: Validation successful
-    TicketPurchaseService -[#green]-> MQ: Publish TicketCreated with final price
 
-    ' Procesamiento del pago
-    MQ -[#green]-> PaymentService: Consume TicketCreated
-    PaymentService -> PaymentService: Process Payment (completed/failed)
-    PaymentService -[#green]-> MQ: Publish PaymentProcessed
+TicketPurchaseService -[#green]-> MQ: Produce ticketCreated with final price
 
-    ' Actualización del estado del ticket
-    MQ -[#green]-> TicketPurchaseService: Consume PaymentProcessed
-    TicketPurchaseService -> TicketPurchaseService: Update Ticket Status (purchased/canceled)
-    TicketPurchaseService -[#green]-> MQ: Publish TicketPurchased (Status Updated)
+' Procesamiento del pago
+MQ -[#green]-> PaymentService: Consume ticketCreated
+PaymentService -> PaymentService: Process payment
+PaymentService -[#green]-> MQ: Produce ticketPaid (PAID/FAILED)
 
-    ' Flujo: Actualización de asientos
-    MQ -[#green]-> SeatBookingService: Consume TicketPurchased
-    SeatBookingService -> SeatBookingService: Update seats status (occupied/available)
-
-    ' Notificación al cliente
-    MQ -[#green]-> NotificationService: Consume PaymentProcessed
-    NotificationService --> Client: Send Payment Notification
-else Some seats invalid
-    SeatBookingService --> TicketPurchaseService: Validation failed (invalidSeats)
-    TicketPurchaseService --> FE: Return error
-end
+' Flujo: Actualización de asientos
+MQ -[#green]-> SeatBookingService: Consume ticketCreated
+MQ -[#green]-> SeatBookingService: Consume ticketPaid
+SeatBookingService -> SeatBookingService: Update reservation status (COMPLETED)
 
 @enduml
